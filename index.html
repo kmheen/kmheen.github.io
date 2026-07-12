@@ -233,21 +233,40 @@
   <div class="modal-backdrop" id="modalBackdrop"></div>
   <div class="modal-panel">
     <button class="modal-close" id="modalClose" data-hover>CLOSE ✕</button>
-    <div class="modal-scroll">
-      <div class="modal-head">
-        <span class="modal-number" id="modalNumber">01</span>
-        <p class="modal-client" id="modalClient"></p>
-        <h2 class="modal-title" id="modalTitle"></h2>
-      </div>
-      <img class="modal-image" id="modalImage" src="" alt="">
-      <div class="modal-body">
-        <div class="modal-meta" id="modalMeta"></div>
-        <div class="modal-text">
-          <h4 id="modalStrategyTitle"></h4>
-          <p id="modalDesc"></p>
-          <ul id="modalPoints"></ul>
+
+    <div class="modal-track" id="modalTrack">
+      <!-- Slide 1: hero image + title -->
+      <section class="modal-slide slide-hero">
+        <img class="modal-image" id="modalImage" src="" alt="">
+        <div class="slide-hero-overlay">
+          <span class="modal-number" id="modalNumber">01</span>
+          <p class="modal-client" id="modalClient"></p>
+          <h2 class="modal-title" id="modalTitle"></h2>
         </div>
+      </section>
+
+      <!-- Slide 2: meta info -->
+      <section class="modal-slide slide-meta">
+        <p class="slide-eyebrow">PROJECT INFO</p>
+        <div class="modal-meta" id="modalMeta"></div>
+      </section>
+
+      <!-- Slide 3: strategy & description -->
+      <section class="modal-slide slide-text">
+        <p class="slide-eyebrow">STRATEGY</p>
+        <h4 id="modalStrategyTitle"></h4>
+        <p id="modalDesc"></p>
+        <ul id="modalPoints"></ul>
+      </section>
+    </div>
+
+    <div class="modal-nav">
+      <div class="modal-dots" id="modalDots">
+        <span class="modal-dot active"></span>
+        <span class="modal-dot"></span>
+        <span class="modal-dot"></span>
       </div>
+      <span class="modal-hint">SCROLL OR DRAG →</span>
     </div>
   </div>
 </div>
