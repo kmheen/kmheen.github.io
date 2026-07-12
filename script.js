@@ -258,6 +258,7 @@ const projects = {
 const modal = document.getElementById('modal');
 const modalBackdrop = document.getElementById('modalBackdrop');
 const modalClose = document.getElementById('modalClose');
+const modalTrack = document.getElementById('modalTrack');
 const modalNumber = document.getElementById('modalNumber');
 const modalClient = document.getElementById('modalClient');
 const modalTitle = document.getElementById('modalTitle');
@@ -266,6 +267,7 @@ const modalMeta = document.getElementById('modalMeta');
 const modalStrategyTitle = document.getElementById('modalStrategyTitle');
 const modalDesc = document.getElementById('modalDesc');
 const modalPoints = document.getElementById('modalPoints');
+const modalDots = document.querySelectorAll('#modalDots .modal-dot');
 
 function openModal(key){
   const p = projects[key];
@@ -283,12 +285,19 @@ function openModal(key){
   modalPoints.innerHTML = p.points.map(pt => `<li>${pt}</li>`).join('');
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
-  modal.querySelector('.modal-scroll').scrollTop = 0;
+  modalTrack.scrollLeft = 0;
+  updateDots();
 }
 
 function closeModal(){
   modal.classList.remove('open');
   document.body.style.overflow = '';
+}
+
+function updateDots(){
+  const slideWidth = modalTrack.clientWidth;
+  const index = Math.round(modalTrack.scrollLeft / slideWidth);
+  modalDots.forEach((dot, i) => dot.classList.toggle('active', i === index));
 }
 
 document.querySelectorAll('.card').forEach(card => {
@@ -299,3 +308,15 @@ modalClose.addEventListener('click', closeModal);
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModal();
 });
+
+// Convert vertical wheel input into horizontal slide movement
+modalTrack.addEventListener('wheel', (e) => {
+  if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+    e.preventDefault();
+    modalTrack.scrollLeft += e.deltaY;
+  }
+}, { passive: false });
+
+modalTrack.addEventListener('scroll', () => {
+  updateDots();
+}, { passive: true });
