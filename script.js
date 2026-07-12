@@ -67,7 +67,7 @@ const projects = {
     number: '01',
     client: '[CJ] OLIVE YOUNG · 2024',
     title: 'OLIVEYOUNG BLACKFRIDAY',
-    image: 'images/project-01.png',
+    images: ['images/project-01.png'],
     meta: [
       ['역할', '2D·3D 작업 · 모션 · 아카이빙 영상'],
       ['사용툴', 'Cinema4D · Octane · After Effects · Photoshop'],
@@ -86,7 +86,7 @@ const projects = {
     number: '02',
     client: '[동아제약] 오쏘몰 · 2025',
     title: '오쏘몰 3D 키비주얼 & 쇼츠',
-    image: 'images/project-02.png',
+    images: ['images/project-02.png'],
     meta: [
       ['역할', '3D 그래픽 에셋 제작'],
       ['사용툴', 'Cinema4D · Octane · Photoshop'],
@@ -105,7 +105,7 @@ const projects = {
     number: '03',
     client: '[오세븐] 인터널 브랜딩 · 2024',
     title: 'OHSEVEN INTERNAL BRANDING',
-    image: 'images/project-03.png',
+    images: ['images/project-03.png'],
     meta: [
       ['역할', '3D 그래픽 에셋 제작'],
       ['사용툴', 'Cinema4D · Octane · Photoshop'],
@@ -124,7 +124,7 @@ const projects = {
     number: '05',
     client: '[해피프린스] · 2025',
     title: 'HAPPY PRINCE 3D ASSET & MOTION',
-    image: 'images/project-04.png',
+    images: ['images/project-04.png'],
     meta: [
       ['역할', '3D 그래픽 에셋 제작'],
       ['사용툴', 'Cinema4D · Octane · Photoshop'],
@@ -143,7 +143,7 @@ const projects = {
     number: '06',
     client: '[삼립] · [동아제약] · [오세븐] · 2026',
     title: 'AI WORKFLOW',
-    image: 'images/project-05.jpg',
+    images: ['images/project-05.jpg'],
     meta: [
       ['역할', '비주얼 디자인 및 AI 기반 콘텐츠 제작'],
       ['사용툴', 'ChatGPT · Gemini · Midjourney · Sora'],
@@ -161,7 +161,7 @@ const projects = {
     number: '07',
     client: '[동아제약] 벳플 · 2025',
     title: 'VETPLE CHARACTER DESIGN',
-    image: 'images/project-06.png',
+    images: ['images/project-06.png'],
     meta: [
       ['역할', '캐릭터 디자인 및 일러스트'],
       ['사용툴', 'Adobe Illustrator · ChatGPT'],
@@ -180,7 +180,7 @@ const projects = {
     number: '04',
     client: '[CJ] 올리브영 · 2026',
     title: 'OLIVE MEMBERS 3D VISUAL SYSTEM',
-    image: 'images/project-07.png',
+    images: ['images/project-07.png'],
     meta: [
       ['역할', '통일된 비주얼·레이아웃 가이드 수립, 3D 에셋 제작'],
       ['사용툴', 'Cinema4D · Octane · AI Tool'],
@@ -199,7 +199,7 @@ const projects = {
     number: '08',
     client: '스코그 · 2024',
     title: 'SKOG BRAND MOTION',
-    image: 'images/project-08.png',
+    images: ['images/project-08.png'],
     meta: [
       ['역할', '3D 그래픽 에셋 제작 및 모션'],
       ['사용툴', 'Cinema4D · Octane · Photoshop · After Effects'],
@@ -218,7 +218,7 @@ const projects = {
     number: '09',
     client: '오흐뒤구떼 · 2024',
     title: 'HEURE DU GOÛTER 3D MOTION',
-    image: 'images/project-09.png',
+    images: ['images/project-09.png'],
     meta: [
       ['역할', '3D 그래픽 에셋 제작 및 모션'],
       ['사용툴', 'Cinema4D · Octane · Photoshop · After Effects'],
@@ -237,7 +237,7 @@ const projects = {
     number: '10',
     client: '[신세계L&B] · 2024',
     title: 'EVAN WILLIAMS HIGHBALL 3D MOTION',
-    image: 'images/project-10.png',
+    images: ['images/project-10.png'],
     meta: [
       ['역할', '3D 그래픽 에셋 제작 및 모션'],
       ['사용툴', 'Cinema4D · Octane · Photoshop · After Effects'],
@@ -259,30 +259,55 @@ const modal = document.getElementById('modal');
 const modalBackdrop = document.getElementById('modalBackdrop');
 const modalClose = document.getElementById('modalClose');
 const modalTrack = document.getElementById('modalTrack');
-const modalNumber = document.getElementById('modalNumber');
-const modalClient = document.getElementById('modalClient');
-const modalTitle = document.getElementById('modalTitle');
-const modalImage = document.getElementById('modalImage');
 const modalMeta = document.getElementById('modalMeta');
 const modalStrategyTitle = document.getElementById('modalStrategyTitle');
 const modalDesc = document.getElementById('modalDesc');
 const modalPoints = document.getElementById('modalPoints');
-const modalDots = document.querySelectorAll('#modalDots .modal-dot');
+const modalDotsWrap = document.getElementById('modalDots');
+let modalDots = [];
+
+function buildImageSlides(p){
+  // Remove any previously injected image slides
+  modalTrack.querySelectorAll('.slide-split').forEach(el => el.remove());
+
+  const slidesHtml = p.images.map((src) => `
+    <section class="modal-slide slide-split">
+      <div class="split-left">
+        <span class="modal-number">${p.number}</span>
+        <p class="modal-client">${p.client}</p>
+        <h2 class="modal-title">${p.title}</h2>
+        <p class="split-desc">${p.desc}</p>
+      </div>
+      <div class="split-right">
+        <img src="${src}" alt="${p.title}">
+      </div>
+    </section>`
+  ).join('');
+
+  modalTrack.insertAdjacentHTML('afterbegin', slidesHtml);
+}
+
+function buildDots(count){
+  modalDotsWrap.innerHTML = Array.from({ length: count })
+    .map((_, i) => `<span class="modal-dot${i === 0 ? ' active' : ''}"></span>`)
+    .join('');
+  modalDots = modalDotsWrap.querySelectorAll('.modal-dot');
+}
 
 function openModal(key){
   const p = projects[key];
   if (!p) return;
-  modalNumber.textContent = p.number;
-  modalClient.textContent = p.client;
-  modalTitle.textContent = p.title;
-  modalImage.src = p.image;
-  modalImage.alt = p.title;
+
+  buildImageSlides(p);
+  buildDots(p.images.length + 2); // + meta slide + strategy slide
+
   modalMeta.innerHTML = p.meta.map(([label, val]) =>
     `<div><span>${label}</span><strong>${val}</strong></div>`
   ).join('');
   modalStrategyTitle.textContent = p.strategyTitle;
   modalDesc.textContent = p.desc;
   modalPoints.innerHTML = p.points.map(pt => `<li>${pt}</li>`).join('');
+
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
   modalTrack.scrollLeft = 0;
