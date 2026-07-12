@@ -68,6 +68,7 @@ const projects = {
     client: '[CJ] OLIVE YOUNG · 2024',
     title: 'OLIVEYOUNG BLACKFRIDAY',
     images: ['images/project-01.png'],
+    wide: true,
     meta: [
       ['역할', '2D·3D 작업 · 모션 · 아카이빙 영상'],
       ['사용툴', 'Cinema4D · Octane · After Effects · Photoshop'],
@@ -125,6 +126,7 @@ const projects = {
     client: '[해피프린스] · 2025',
     title: 'HAPPY PRINCE 3D ASSET & MOTION',
     images: ['images/project-04.png'],
+    wide: true,
     meta: [
       ['역할', '3D 그래픽 에셋 제작'],
       ['사용툴', 'Cinema4D · Octane · Photoshop'],
@@ -259,7 +261,6 @@ const modal = document.getElementById('modal');
 const modalBackdrop = document.getElementById('modalBackdrop');
 const modalClose = document.getElementById('modalClose');
 const modalTrack = document.getElementById('modalTrack');
-const modalMeta = document.getElementById('modalMeta');
 const modalStrategyTitle = document.getElementById('modalStrategyTitle');
 const modalDesc = document.getElementById('modalDesc');
 const modalPoints = document.getElementById('modalPoints');
@@ -270,6 +271,10 @@ function buildImageSlides(p){
   // Remove any previously injected image slides
   modalTrack.querySelectorAll('.slide-split').forEach(el => el.remove());
 
+  const metaHtml = p.meta.map(([label, val]) =>
+    `<div><span>${label}</span><strong>${val}</strong></div>`
+  ).join('');
+
   const slidesHtml = p.images.map((src) => `
     <section class="modal-slide slide-split">
       <div class="split-left">
@@ -277,6 +282,7 @@ function buildImageSlides(p){
         <p class="modal-client">${p.client}</p>
         <h2 class="modal-title">${p.title}</h2>
         <p class="split-desc">${p.desc}</p>
+        <div class="split-meta">${metaHtml}</div>
       </div>
       <div class="split-right">
         <img src="${src}" alt="${p.title}">
@@ -285,6 +291,22 @@ function buildImageSlides(p){
   ).join('');
 
   modalTrack.insertAdjacentHTML('afterbegin', slidesHtml);
+
+  // Detect each image's orientation once loaded: wide images bleed to the
+  // panel edge, tall/portrait images stay boxed with margin.
+  // A project can force this with `wide: true` regardless of actual ratio.
+  modalTrack.querySelectorAll('.slide-split .split-right img').forEach(img => {
+    if (p.wide) {
+      img.closest('.split-right').classList.add('is-wide');
+      return;
+    }
+    const applyOrientation = () => {
+      const wide = img.naturalWidth / img.naturalHeight > 1.15;
+      img.closest('.split-right').classList.toggle('is-wide', wide);
+    };
+    if (img.complete) applyOrientation();
+    else img.addEventListener('load', applyOrientation);
+  });
 }
 
 function buildDots(count){
@@ -299,11 +321,8 @@ function openModal(key){
   if (!p) return;
 
   buildImageSlides(p);
-  buildDots(p.images.length + 2); // + meta slide + strategy slide
+  buildDots(p.images.length + 1); // + strategy slide
 
-  modalMeta.innerHTML = p.meta.map(([label, val]) =>
-    `<div><span>${label}</span><strong>${val}</strong></div>`
-  ).join('');
   modalStrategyTitle.textContent = p.strategyTitle;
   modalDesc.textContent = p.desc;
   modalPoints.innerHTML = p.points.map(pt => `<li>${pt}</li>`).join('');
