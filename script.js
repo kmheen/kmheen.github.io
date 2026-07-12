@@ -67,7 +67,7 @@ const projects = {
     number: '01',
     client: '[CJ] OLIVE YOUNG · 2024',
     title: 'OLIVEYOUNG BLACKFRIDAY',
-    image: 'images/project-01.jpg',
+    image: 'images/project-01.png',
     meta: [
       ['역할', '2D·3D 작업 · 모션 · 아카이빙 영상'],
       ['사용툴', 'Cinema4D · Octane · After Effects · Photoshop'],
@@ -86,7 +86,7 @@ const projects = {
     number: '02',
     client: '[동아제약] 오쏘몰 · 2025',
     title: '오쏘몰 3D 키비주얼 & 쇼츠',
-    image: 'images/project-02.jpg',
+    image: 'images/project-02.png',
     meta: [
       ['역할', '3D 그래픽 에셋 제작'],
       ['사용툴', 'Cinema4D · Octane · Photoshop'],
@@ -105,7 +105,7 @@ const projects = {
     number: '03',
     client: '[오세븐] 인터널 브랜딩 · 2024',
     title: 'OHSEVEN INTERNAL BRANDING',
-    image: 'images/project-03.jpg',
+    image: 'images/project-03.png',
     meta: [
       ['역할', '3D 그래픽 에셋 제작'],
       ['사용툴', 'Cinema4D · Octane · Photoshop'],
@@ -124,7 +124,7 @@ const projects = {
     number: '04',
     client: '[해피프린스] · 2025',
     title: 'HAPPY PRINCE 3D ASSET & MOTION',
-    image: 'images/project-04.jpg',
+    image: 'images/project-04.png',
     meta: [
       ['역할', '3D 그래픽 에셋 제작'],
       ['사용툴', 'Cinema4D · Octane · Photoshop'],
@@ -155,6 +155,101 @@ const projects = {
       '[벳플] 캐릭터 리디자인 — AI로 다양한 포즈와 상황을 빠르게 구현해 작업 효율 향상',
       '[오세븐] AI 기반 브랜드 영상 — 3D 구조 설계와 AI 모션 생성을 결합한 제작 프로세스 최적화',
       '[삼립] AI Creative Video — 3가지 비주얼 컨셉 기반 어워드 제출용 영상 프로젝트',
+    ]
+  },
+  p6: {
+    number: '06',
+    client: '[동아제약] 벳플 · 2025',
+    title: 'VETPLE CHARACTER DESIGN',
+    image: 'images/project-06.png',
+    meta: [
+      ['역할', '캐릭터 디자인 및 일러스트'],
+      ['사용툴', 'Adobe Illustrator · ChatGPT'],
+      ['기여도', '100%'],
+      ['제작 기간', '1개월'],
+    ],
+    strategyTitle: '반려동물 브랜드를 위한 친근한 캐릭터 시스템',
+    desc: '강아지와 고양이 캐릭터를 중심으로, 다양한 포즈와 상황에서 활용 가능한 일러스트 세트를 디자인했습니다. SNS 콘텐츠와 브랜드 캠페인 전반에서 일관되게 사용할 수 있는 캐릭터 시스템을 구축했습니다.',
+    points: [
+      '캐릭터 포즈 라이브러리 구축 — 일상, 이벤트, 시즌 콘텐츠에 두루 활용 가능한 세트 구성',
+      'SNS 콘텐츠 확장 — 인스타그램 카드뉴스, 이벤트 배너 등 다양한 접점에 적용',
+      '브랜드 톤 정립 — 친근하고 사랑스러운 무드로 반려동물 브랜드 정체성 강화',
+    ]
+  },
+  p7: {
+    number: '07',
+    client: '[CJ] 올리브영 · 2026',
+    title: 'OLIVE MEMBERS 3D VISUAL SYSTEM',
+    image: 'images/project-07.png',
+    meta: [
+      ['역할', '통일된 비주얼·레이아웃 가이드 수립, 3D 에셋 제작'],
+      ['사용툴', 'Cinema4D · Octane · AI Tool'],
+      ['기여도', '90%'],
+      ['제작 기간', '1개월'],
+    ],
+    strategyTitle: '멤버십 등급별로 확장 가능한 3D 비주얼 가이드',
+    desc: '올리브영 멤버십 등급(올리브 멤버스, 올리브 하이틴 멤버스 등)별로 일관된 톤을 유지하면서도 구분되는 3D 비주얼 시스템을 설계했습니다. 레이아웃 가이드를 함께 수립해 다양한 채널에서 반복 제작이 가능하도록 했습니다.',
+    points: [
+      '등급별 컬러 시스템 — 멤버십 단계에 따라 컬러 톤을 구분해 직관적으로 인지 가능',
+      '레이아웃 가이드 수립 — 배너, 팝업, 클래스 콘텐츠 등에 반복 적용 가능한 구조 설계',
+      '3D 마스코트 활용 — 올리브 캐릭터를 다양한 상황에 맞춰 확장 제작',
+    ]
+  },
+  p8: {
+    number: '08',
+    client: '스코그 · 2024',
+    title: 'SKOG BRAND MOTION',
+    image: 'images/project-08.png',
+    meta: [
+      ['역할', '3D 그래픽 에셋 제작 및 모션'],
+      ['사용툴', 'Cinema4D · Octane · Photoshop · After Effects'],
+      ['기여도', '90%'],
+      ['제작 기간', '3주'],
+    ],
+    strategyTitle: '브런치·베이커리 브랜드를 위한 감각적인 3D 모션',
+    desc: '브랜드 로고를 3D 오브젝트로 재해석하고, 공간과 재질감을 살린 모션 콘텐츠를 제작했습니다. SNS 스토리 포맷에 맞춰 몰입감 있는 브랜드 경험을 전달합니다.',
+    points: [
+      '로고의 입체적 재해석 — 워드마크를 3D 오브젝트로 확장해 브랜드 인상을 강화',
+      '재질·조명 디테일 — 유리·금속 등 다양한 재질감으로 고급스러운 무드 연출',
+      'SNS 스토리 최적화 — 세로형 포맷에 맞춘 몰입감 있는 콘텐츠 구성',
+    ]
+  },
+  p9: {
+    number: '09',
+    client: '오흐뒤구떼 · 2024',
+    title: 'HEURE DU GOÛTER 3D MOTION',
+    image: 'images/project-09.png',
+    meta: [
+      ['역할', '3D 그래픽 에셋 제작 및 모션'],
+      ['사용툴', 'Cinema4D · Octane · Photoshop · After Effects'],
+      ['기여도', '100%'],
+      ['제작 기간', '4주'],
+    ],
+    strategyTitle: '프렌치 디저트 브랜드를 위한 고급스러운 비주얼',
+    desc: "'간식의 시간(Heure du Goûter)'이라는 브랜드 컨셉에 맞춰, 다크 톤과 골드 디테일을 활용한 고급스러운 3D 무드를 연출했습니다. 디저트의 질감을 살린 클로즈업 연출로 제품의 매력을 강조했습니다.",
+    points: [
+      '브랜드 무드 정립 — 다크 그린·골드 컬러로 프렌치 디저트 브랜드의 고급스러움을 표현',
+      '제품 질감 클로즈업 — 마들렌·초콜릿 등 디저트의 재질감을 세밀하게 연출',
+      '아치·공간 연출 — 브랜드 세계관을 담은 공간감 있는 배경 디자인',
+    ]
+  },
+  p10: {
+    number: '10',
+    client: '[신세계L&B] · 2024',
+    title: 'EVAN WILLIAMS HIGHBALL 3D MOTION',
+    image: 'images/project-10.png',
+    meta: [
+      ['역할', '3D 그래픽 에셋 제작 및 모션'],
+      ['사용툴', 'Cinema4D · Octane · Photoshop · After Effects'],
+      ['기여도', '90%'],
+      ['제작 기간', '2주'],
+    ],
+    strategyTitle: '하이볼 제품의 청량감을 살린 3D 비주얼',
+    desc: '제품과 과일 소재를 함께 배치한 3D 스틸 컷을 제작해, 하이볼의 청량하고 시원한 무드를 시각적으로 전달했습니다. 다양한 맛의 라인업을 동일한 톤으로 일관되게 구성했습니다.',
+    points: [
+      '라인업별 비주얼 통일 — 맛(애플·레몬 등)이 달라도 동일한 구도와 톤으로 일관성 유지',
+      '청량감 있는 연출 — 얼음·과즙 디테일로 시원한 무드를 강조',
+      '커튼·조명 연출 — 따뜻한 배경 조명과 커튼 질감으로 고급스러운 분위기 조성',
     ]
   },
 };
