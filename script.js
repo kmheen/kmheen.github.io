@@ -121,7 +121,7 @@ const projects = {
     ]
   },
   p4: {
-    number: '04',
+    number: '05',
     client: '[해피프린스] · 2025',
     title: 'HAPPY PRINCE 3D ASSET & MOTION',
     image: 'images/project-04.png',
@@ -140,7 +140,7 @@ const projects = {
     ]
   },
   p5: {
-    number: '05',
+    number: '06',
     client: '[삼립] · [동아제약] · [오세븐] · 2026',
     title: 'AI WORKFLOW',
     image: 'images/project-05.jpg',
@@ -158,7 +158,7 @@ const projects = {
     ]
   },
   p6: {
-    number: '06',
+    number: '07',
     client: '[동아제약] 벳플 · 2025',
     title: 'VETPLE CHARACTER DESIGN',
     image: 'images/project-06.png',
@@ -177,7 +177,7 @@ const projects = {
     ]
   },
   p7: {
-    number: '07',
+    number: '04',
     client: '[CJ] 올리브영 · 2026',
     title: 'OLIVE MEMBERS 3D VISUAL SYSTEM',
     image: 'images/project-07.png',
