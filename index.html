@@ -1,11 +1,210 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-  <title>내 포트폴리오</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KIM CHAEYEON — 3D / Motion Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>안녕하세요, 저는 김채연입니다</h1>
-  <p> 브랜드의 톤앤매너와 메시지를 이해하고, 사용자가 쉽고 매력적으로 받아들일 수 있는 시각 언어로 풀어내는 디자이너입니다.</p>
+
+<div class="grain"></div>
+<div class="glow" id="glow"></div>
+
+<nav class="dotnav" id="dotnav">
+  <a href="#hero" data-label="TOP" class="dot active"></a>
+  <a href="#about" data-label="ABOUT" class="dot"></a>
+  <a href="#p01" data-label="01" class="dot"></a>
+  <a href="#p02" data-label="02" class="dot"></a>
+  <a href="#p03" data-label="03" class="dot"></a>
+  <a href="#p04" data-label="04" class="dot"></a>
+  <a href="#p05" data-label="05" class="dot"></a>
+  <a href="#contact" data-label="CONTACT" class="dot"></a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-eyebrow reveal">PORTFOLIO 2026</div>
+  <h1 class="hero-title">
+    <span class="line reveal">KIM</span>
+    <span class="line reveal" data-delay="1">CHAEYEON</span>
+  </h1>
+  <p class="hero-role reveal" data-delay="2">3D · MOTION · AI DESIGNER</p>
+  <div class="hero-scroll reveal" data-delay="3">
+    <span>SCROLL</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>CINEMA 4D</span><span>·</span><span>OCTANE RENDER</span><span>·</span>
+    <span>AFTER EFFECTS</span><span>·</span><span>PHOTOSHOP</span><span>·</span>
+    <span>MIDJOURNEY</span><span>·</span><span>CHATGPT</span><span>·</span><span>SORA</span><span>·</span>
+    <span>CINEMA 4D</span><span>·</span><span>OCTANE RENDER</span><span>·</span>
+    <span>AFTER EFFECTS</span><span>·</span><span>PHOTOSHOP</span><span>·</span>
+    <span>MIDJOURNEY</span><span>·</span><span>CHATGPT</span><span>·</span><span>SORA</span><span>·</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-photo reveal">
+    <img src="images/profile.jpg" alt="Kim Chaeyeon">
+  </div>
+  <div class="about-content">
+    <p class="section-eyebrow reveal">ABOUT</p>
+    <h2 class="about-lead reveal">
+      브랜드의 톤앤매너와 메시지를 이해하고,<br>
+      사용자가 쉽고 매력적으로 받아들일 수 있는<br>
+      시각 언어로 풀어내는 디자이너입니다.
+    </h2>
+
+    <div class="timeline reveal">
+      <div class="timeline-group">
+        <h3>EDUCATION</h3>
+        <div class="timeline-row">
+          <span class="t-date">2016.03 – 2021.02</span>
+          <span class="t-name">중앙대학교</span>
+          <span class="t-desc">시각디자인학과 졸업</span>
+        </div>
+        <div class="timeline-row">
+          <span class="t-date">2022.06 – 2022.10</span>
+          <span class="t-name">더모션아카데미</span>
+          <span class="t-desc">C4D / Octane 과정 수료</span>
+        </div>
+      </div>
+      <div class="timeline-group">
+        <h3>CAREER</h3>
+        <div class="timeline-row">
+          <span class="t-date">2023.05 – 현재</span>
+          <span class="t-name">오세븐 OHSEVEN</span>
+          <span class="t-desc">Brand Design Solution Company · 3D / Motion / AI Senior Designer · Seoul</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT 01 -->
+<section class="project" id="p01" style="--accent:#FFD400; --accent-soft:#FFD40022;">
+  <div class="project-number">01</div>
+  <div class="project-inner">
+    <div class="project-text reveal">
+      <p class="section-eyebrow">[CJ] OLIVE YOUNG · 2024</p>
+      <h2 class="project-title">OLIVEYOUNG<br>BLACKFRIDAY</h2>
+      <p class="project-desc">기존 2D 캐릭터를 3D로 재해석하고, 반복과 확장이 가능한 구조로 설계하여 다양한 채널에서 일관된 브랜드 경험을 구축했습니다.</p>
+      <ul class="project-meta">
+        <li><span>역할</span>2D·3D 작업 · 모션 · 아카이빙 영상</li>
+        <li><span>사용툴</span>Cinema4D · Octane · After Effects · Photoshop</li>
+        <li><span>기여도</span>90%</li>
+        <li><span>제작 기간</span>5주</li>
+      </ul>
+    </div>
+    <div class="project-image reveal">
+      <img src="images/project-01.jpg" alt="OliveYoung Black Friday 3D 캐릭터">
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT 02 -->
+<section class="project reverse" id="p02" style="--accent:#FF5FC4; --accent-soft:#4FD8FF22;">
+  <div class="project-number">02</div>
+  <div class="project-inner">
+    <div class="project-image reveal">
+      <img src="images/project-02.jpg" alt="오쏘몰 3D 키비주얼">
+    </div>
+    <div class="project-text reveal">
+      <p class="section-eyebrow">[동아제약] 오쏘몰 · 2025</p>
+      <h2 class="project-title">오쏘몰 3D<br>키비주얼 &amp; 쇼츠</h2>
+      <p class="project-desc">핑크(F)·블루(M) 컬러를 분리한 듀얼 키비주얼로 라인업을 직관적으로 인지하도록 설계하고, 3D 그래픽과 리듬감 있는 모션으로 생생한 에너지를 전달합니다.</p>
+      <ul class="project-meta">
+        <li><span>역할</span>3D 그래픽 에셋 제작</li>
+        <li><span>사용툴</span>Cinema4D · Octane · Photoshop</li>
+        <li><span>기여도</span>100%</li>
+        <li><span>제작 기간</span>4주</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT 03 -->
+<section class="project" id="p03" style="--accent:#E4157B; --accent-soft:#E4157B22;">
+  <div class="project-number">03</div>
+  <div class="project-inner">
+    <div class="project-text reveal">
+      <p class="section-eyebrow">[오세븐] 인터널 브랜딩 · 2024</p>
+      <h2 class="project-title">OHSEVEN<br>INTERNAL BRANDING</h2>
+      <p class="project-desc">조직의 커뮤니케이션 방식과 브랜드 특성을 기반으로, 다양한 상황에서 일관되게 활용 가능한 3D 에셋 시스템을 설계했습니다.</p>
+      <ul class="project-meta">
+        <li><span>역할</span>3D 그래픽 에셋 제작</li>
+        <li><span>사용툴</span>Cinema4D · Octane · Photoshop</li>
+        <li><span>기여도</span>100%</li>
+        <li><span>제작 기간</span>2주</li>
+      </ul>
+    </div>
+    <div class="project-image reveal">
+      <img src="images/project-03.jpg" alt="OHSEVEN 인터널 브랜딩 3D 아이콘">
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT 04 -->
+<section class="project reverse" id="p04" style="--accent:#FF9BC6; --accent-soft:#BFE6C233;">
+  <div class="project-number">04</div>
+  <div class="project-inner">
+    <div class="project-image reveal">
+      <img src="images/project-04.jpg" alt="Happy Prince 3D 에셋">
+    </div>
+    <div class="project-text reveal">
+      <p class="section-eyebrow">[해피프린스] · 2025</p>
+      <h2 class="project-title">HAPPY PRINCE<br>3D ASSET &amp; MOTION</h2>
+      <p class="project-desc">'선물 같은 순간'이라는 브랜드 컨셉을 기반으로, 텍스처와 형태를 통해 일관된 시각 언어로 확장한 프로젝트입니다.</p>
+      <ul class="project-meta">
+        <li><span>역할</span>3D 그래픽 에셋 제작</li>
+        <li><span>사용툴</span>Cinema4D · Octane · Photoshop</li>
+        <li><span>기여도</span>100%</li>
+        <li><span>제작 기간</span>2주</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT 05 -->
+<section class="project" id="p05" style="--accent:#E31C3D; --accent-soft:#E31C3D22;">
+  <div class="project-number">05</div>
+  <div class="project-inner">
+    <div class="project-text reveal">
+      <p class="section-eyebrow">[삼립] · [동아제약] · [오세븐] · 2026</p>
+      <h2 class="project-title">AI WORKFLOW</h2>
+      <p class="project-desc">AI를 단순 생성 도구가 아닌, 아이디어 탐색부터 결과 제작까지 확장 가능한 디자인 도구로 활용합니다. 프로젝트의 목적에 따라 AI와 수작업을 결합해 효율성과 완성도를 동시에 확보합니다.</p>
+      <ul class="project-meta">
+        <li><span>역할</span>비주얼 디자인 및 AI 기반 콘텐츠 제작</li>
+        <li><span>사용툴</span>ChatGPT · Gemini · Midjourney · Sora</li>
+        <li><span>기여도</span>100%</li>
+      </ul>
+    </div>
+    <div class="project-image reveal">
+      <img src="images/project-05.jpg" alt="AI Workflow 2026 말의해 프로젝트">
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<footer class="contact" id="contact">
+  <p class="section-eyebrow reveal">CONTACT</p>
+  <h2 class="contact-title reveal">LET'S<br>CREATE<br>TOGETHER</h2>
+  <div class="contact-info reveal">
+    <a href="mailto:00coco0@naver.com">00coco0@naver.com</a>
+    <span>+82 10 9899 7216</span>
+  </div>
+  <p class="contact-foot">© 2026 KIM CHAEYEON. ALL RIGHTS RESERVED.</p>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
