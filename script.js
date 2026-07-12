@@ -68,7 +68,6 @@ const projects = {
     client: '[CJ] OLIVE YOUNG · 2024',
     title: 'OLIVEYOUNG BLACKFRIDAY',
     images: ['images/project-01.png'],
-    wide: true,
     meta: [
       ['역할', '2D·3D 작업 · 모션 · 아카이빙 영상'],
       ['사용툴', 'Cinema4D · Octane · After Effects · Photoshop'],
@@ -126,7 +125,6 @@ const projects = {
     client: '[해피프린스] · 2025',
     title: 'HAPPY PRINCE 3D ASSET & MOTION',
     images: ['images/project-04.png'],
-    wide: true,
     meta: [
       ['역할', '3D 그래픽 에셋 제작'],
       ['사용툴', 'Cinema4D · Octane · Photoshop'],
@@ -291,22 +289,6 @@ function buildImageSlides(p){
   ).join('');
 
   modalTrack.insertAdjacentHTML('afterbegin', slidesHtml);
-
-  // Detect each image's orientation once loaded: wide images bleed to the
-  // panel edge, tall/portrait images stay boxed with margin.
-  // A project can force this with `wide: true` regardless of actual ratio.
-  modalTrack.querySelectorAll('.slide-split .split-right img').forEach(img => {
-    if (p.wide) {
-      img.closest('.split-right').classList.add('is-wide');
-      return;
-    }
-    const applyOrientation = () => {
-      const wide = img.naturalWidth / img.naturalHeight > 1.15;
-      img.closest('.split-right').classList.toggle('is-wide', wide);
-    };
-    if (img.complete) applyOrientation();
-    else img.addEventListener('load', applyOrientation);
-  });
 }
 
 function buildDots(count){
@@ -353,22 +335,6 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModal();
 });
 
-// Convert vertical wheel input into horizontal slide movement
-modalTrack.addEventListener('wheel', (e) => {
-  if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-    e.preventDefault();
-    modalTrack.scrollLeft += e.deltaY;
-  }
-}, { passive: false });
-
-modalTrack.addEventListener('scroll', () => {
-  updateDots();
-}, { passive: true });
-
-// Arrow button navigation — a reliable fallback alongside wheel/drag
-const modalPrev = document.getElementById('modalPrev');
-const modalNext = document.getElementById('modalNext');
-
 function goToSlide(direction){
   const slideWidth = modalTrack.clientWidth;
   modalTrack.scrollTo({
@@ -377,9 +343,24 @@ function goToSlide(direction){
   });
 }
 
-modalPrev.addEventListener('click', () => goToSlide(-1));
-modalNext.addEventListener('click', () => goToSlide(1));
+// Convert vertical wheel/trackpad input into one horizontal slide move at
+// a time. A short lock after each move prevents one continuous scroll
+// gesture from firing multiple slide changes at once.
+let wheelLocked = false;
+modalTrack.addEventListener('wheel', (e) => {
+  if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return; // let native horizontal gestures through
+  e.preventDefault();
+  if (wheelLocked || Math.abs(e.deltaY) < 10) return;
+  wheelLocked = true;
+  goToSlide(e.deltaY > 0 ? 1 : -1);
+  setTimeout(() => { wheelLocked = false; }, 650);
+}, { passive: false });
 
+modalTrack.addEventListener('scroll', () => {
+  updateDots();
+}, { passive: true });
+
+// Keyboard left/right as a lightweight extra option (no visible UI clutter)
 document.addEventListener('keydown', (e) => {
   if (!modal.classList.contains('open')) return;
   if (e.key === 'ArrowRight') goToSlide(1);
