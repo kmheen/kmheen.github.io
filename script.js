@@ -364,3 +364,24 @@ modalTrack.addEventListener('wheel', (e) => {
 modalTrack.addEventListener('scroll', () => {
   updateDots();
 }, { passive: true });
+
+// Arrow button navigation — a reliable fallback alongside wheel/drag
+const modalPrev = document.getElementById('modalPrev');
+const modalNext = document.getElementById('modalNext');
+
+function goToSlide(direction){
+  const slideWidth = modalTrack.clientWidth;
+  modalTrack.scrollTo({
+    left: modalTrack.scrollLeft + slideWidth * direction,
+    behavior: 'smooth'
+  });
+}
+
+modalPrev.addEventListener('click', () => goToSlide(-1));
+modalNext.addEventListener('click', () => goToSlide(1));
+
+document.addEventListener('keydown', (e) => {
+  if (!modal.classList.contains('open')) return;
+  if (e.key === 'ArrowRight') goToSlide(1);
+  if (e.key === 'ArrowLeft') goToSlide(-1);
+});
