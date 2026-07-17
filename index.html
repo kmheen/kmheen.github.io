@@ -215,11 +215,11 @@
     </div>
   </section>
 
-  <!-- ============ PROJECT CASE STUDY (풀스크린, 스크롤로 다음 장 이동) ============ -->
+  <!-- ============ PROJECT CASE STUDY (풀스크린, 드래그/스크롤로 다음 장 이동) ============ -->
   <div class="project-modal" id="projectModal" aria-hidden="true">
     <button type="button" class="project-modal-close" data-modal-close aria-label="닫기">✕</button>
 
-    <div class="project-modal-scroll" id="modalScroll">
+    <div class="project-modal-track" id="modalTrack">
       <section class="modal-page modal-page-hero">
         <img id="modalImage" src="" alt="">
         <div class="modal-hero-info">
@@ -227,13 +227,20 @@
           <h2 class="project-modal-title" id="modalTitle"></h2>
           <span class="project-modal-tag" id="modalTag"></span>
         </div>
-        <span class="modal-scroll-hint">SCROLL TO CONTINUE ↓</span>
       </section>
 
       <section class="modal-page modal-page-strategy">
         <span class="modal-eyebrow">STRATEGY</span>
         <p class="modal-strategy-text" id="modalDesc"></p>
       </section>
+    </div>
+
+    <div class="project-modal-nav">
+      <div class="modal-dots" id="modalDots">
+        <span class="modal-dot is-active" data-slide="0"></span>
+        <span class="modal-dot" data-slide="1"></span>
+      </div>
+      <span class="modal-hint">SCROLL OR DRAG →</span>
     </div>
   </div>
 
@@ -380,16 +387,27 @@
       }
     })();
 
-    // ---- 프로젝트 클릭 → 풀스크린 케이스 스터디 (스크롤로 다음 장 이동) ----
+    // ---- 프로젝트 클릭 → 풀스크린 케이스 스터디 (드래그/스크롤로 다음 장 이동) ----
     (function () {
       const modal = document.getElementById('projectModal');
-      const modalScroll = document.getElementById('modalScroll');
+      const track = document.getElementById('modalTrack');
+      const dotsWrap = document.getElementById('modalDots');
+      const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('.modal-dot')) : [];
       const modalImage = document.getElementById('modalImage');
       const modalNum = document.getElementById('modalNum');
       const modalTitle = document.getElementById('modalTitle');
       const modalTag = document.getElementById('modalTag');
       const modalDesc = document.getElementById('modalDesc');
-      if (!modal) return;
+      if (!modal || !track) return;
+
+      function goToSlide(index) {
+        track.scrollTo({ left: index * track.clientWidth, behavior: 'smooth' });
+      }
+
+      function updateActiveDot() {
+        const index = Math.round(track.scrollLeft / track.clientWidth);
+        dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+      }
 
       function openModal(tile) {
         const img = tile.querySelector('.work-thumb');
@@ -407,7 +425,8 @@
         modal.classList.add('is-open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
-        if (modalScroll) modalScroll.scrollTop = 0;
+        track.scrollLeft = 0;
+        updateActiveDot();
       }
 
       function closeModal() {
@@ -425,8 +444,51 @@
       });
 
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+        if (!modal.classList.contains('is-open')) return;
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'ArrowRight') goToSlide(Math.min(Math.round(track.scrollLeft / track.clientWidth) + 1, dots.length - 1));
+        if (e.key === 'ArrowLeft') goToSlide(Math.max(Math.round(track.scrollLeft / track.clientWidth) - 1, 0));
       });
+
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => goToSlide(i));
+      });
+
+      track.addEventListener('scroll', () => {
+        window.requestAnimationFrame(updateActiveDot);
+      }, { passive: true });
+
+      // 마우스로 클릭+드래그해서 다음 장으로 넘기기 (터치/트랙패드는 브라우저 기본 스크롤 사용)
+      let isDragging = false;
+      let dragStartX = 0;
+      let dragStartScroll = 0;
+
+      track.addEventListener('pointerdown', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        isDragging = true;
+        track.classList.add('is-dragging');
+        dragStartX = e.clientX;
+        dragStartScroll = track.scrollLeft;
+        track.setPointerCapture(e.pointerId);
+      });
+
+      track.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        track.scrollLeft = dragStartScroll - (e.clientX - dragStartX);
+      });
+
+      function endDrag() {
+        if (!isDragging) return;
+        isDragging = false;
+        track.classList.remove('is-dragging');
+        goToSlide(Math.round(track.scrollLeft / track.clientWidth));
+      }
+
+      track.addEventListener('pointerup', endDrag);
+      track.addEventListener('pointercancel', endDrag);
+      track.addEventListener('pointerleave', () => { if (isDragging) endDrag(); });
+
+      window.addEventListener('resize', () => { if (modal.classList.contains('is-open')) updateActiveDot(); });
     })();
 
     // ---- 무드 로테이터 ----
