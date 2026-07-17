@@ -37,11 +37,8 @@
     </div>
   </header>
 
-  <!-- ============ HERO / SHAPES INTERACTION ============ -->
+  <!-- ============ HERO ============ -->
   <section class="labs-hero" id="top">
-    <!-- 낙하 전 도형이 자리잡는 공간 확보용 (실제 위치는 JS가 절대좌표로 제어) -->
-    <div class="shapes-stage"></div>
-
     <div class="labs-intro">
       <div class="labs-intro-text">
         <span class="hero-eyebrow">PORTFOLIO 2026 — SEOUL</span>
@@ -63,40 +60,6 @@
     </div>
 
     <h2 class="portfolio-wordmark" id="wordmark"><span id="wordmarkText">PORTFOLIO</span></h2>
-
-    <!-- 떨어지는 도형들: 초기 위치는 CSS, 낙하 후 위치는 JS(transform)가 제어 -->
-    <div class="shape shape-circle" data-shape="circle"></div>
-    <div class="shape shape-circle shape-circle-b" data-shape="circle"></div>
-    <div class="shape shape-square" data-shape="square"></div>
-
-    <svg class="shape shape-triangle" data-shape="triangle" viewBox="0 0 100 100">
-      <path d="M57.48,16.96 L84.09,62.96 Q91.57,76 76.61,76 L23.39,76 Q8.43,76 15.91,62.96 L42.52,16.96 Q50,4 57.48,16.96 Z" fill="currentColor"/>
-    </svg>
-
-    <svg class="shape shape-clover" data-shape="clover" viewBox="0 0 100 100">
-      <circle cx="50" cy="27" r="26" fill="currentColor"/>
-      <circle cx="73" cy="50" r="26" fill="currentColor"/>
-      <circle cx="50" cy="73" r="26" fill="currentColor"/>
-      <circle cx="27" cy="50" r="26" fill="currentColor"/>
-      <circle cx="50" cy="50" r="20" fill="currentColor"/>
-    </svg>
-
-    <svg class="shape shape-clover shape-clover-b" data-shape="clover" viewBox="0 0 100 100">
-      <circle cx="50" cy="27" r="26" fill="currentColor"/>
-      <circle cx="73" cy="50" r="26" fill="currentColor"/>
-      <circle cx="50" cy="73" r="26" fill="currentColor"/>
-      <circle cx="27" cy="50" r="26" fill="currentColor"/>
-      <circle cx="50" cy="50" r="20" fill="currentColor"/>
-    </svg>
-
-    <svg class="shape shape-star" data-shape="star" viewBox="0 0 100 100">
-      <circle cx="50" cy="24" r="20" fill="currentColor"/>
-      <circle cx="74.73" cy="41.97" r="20" fill="currentColor"/>
-      <circle cx="65.29" cy="71.03" r="20" fill="currentColor"/>
-      <circle cx="34.71" cy="71.03" r="20" fill="currentColor"/>
-      <circle cx="25.27" cy="41.97" r="20" fill="currentColor"/>
-      <circle cx="50" cy="50" r="18" fill="currentColor"/>
-    </svg>
   </section>
 
   <!-- ============ MARQUEE ============ -->
@@ -223,14 +186,19 @@
       <button type="button" class="project-modal-close" data-modal-close aria-label="닫기">✕</button>
 
       <div class="project-modal-head">
-        <span class="project-modal-num" id="modalNum"></span>
-        <h2 class="project-modal-title" id="modalTitle"></h2>
-        <span class="project-modal-tag" id="modalTag"></span>
+        <div class="project-modal-head-info">
+          <span class="project-modal-num" id="modalNum"></span>
+          <h2 class="project-modal-title" id="modalTitle"></h2>
+          <span class="project-modal-tag" id="modalTag"></span>
+        </div>
+        <div class="project-modal-head-strategy">
+          <span class="modal-eyebrow">STRATEGY</span>
+          <p class="modal-strategy-text" id="modalDesc"></p>
+        </div>
       </div>
 
       <div class="project-modal-track" id="modalTrack">
-        <!-- 슬라이드는 JS가 프로젝트별 이미지 목록을 읽어 여기에 자동으로 채웁니다:
-             1번째 슬라이드 = 첫 이미지 + STRATEGY 텍스트(우측), 이후 슬라이드 = 나머지 이미지들 -->
+        <!-- 이미지 슬라이드는 JS가 프로젝트별 이미지 목록(data-images)을 읽어 여기에 자동으로 채웁니다 -->
       </div>
 
       <div class="project-modal-nav">
@@ -303,86 +271,6 @@
       document.fonts.ready.then(fitWordmark);
     }
 
-    // ---- 도형 하강: 스크롤량에 정확히 비례해서 내려가고, 다시 올리면 그대로 따라 올라감 ----
-    (function () {
-      const stageEl = document.querySelector('.labs-hero');
-      const wordmarkEl = document.getElementById('wordmark');
-      const shapeEls = Array.from(document.querySelectorAll('.labs-hero .shape'));
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      if (!stageEl || !wordmarkEl || !shapeEls.length || reduceMotion) return;
-
-      // 도형마다 최종적으로 안착할 때의 미세한 높이차/기울기 (자연스러운 더미 느낌)
-      const finalYOffset = [10, -15, 20, -10, 15, -20, 5];
-      const finalRotate = [-8, 6, -5, 10, -7, 9, -11];
-      // 도형마다 하강을 시작/종료하는 스크롤 구간을 살짝 어긋나게 줘서 순차적으로 떨어지는 느낌을 줌
-      const pStart = [0, 0.02, 0.04, 0.06, 0.08, 0.10, 0.12];
-      const pSpan = 0.5;
-
-      let base = [];
-      let groundY = 0;
-      let scrollDistance = 480;
-      let ticking = false;
-
-      function easeInOut(t) { return t * t * (3 - 2 * t); }
-
-      // 현재 transform을 제거한 CSS 원래 위치를 기준으로 다시 측정
-      function measure() {
-        const rect = stageEl.getBoundingClientRect();
-        shapeEls.forEach((el) => { el.style.transform = 'none'; });
-        base = shapeEls.map((el) => {
-          const r = el.getBoundingClientRect();
-          return { x: r.left - rect.left, y: r.top - rect.top, w: r.width, h: r.height };
-        });
-
-        const wRect = wordmarkEl.getBoundingClientRect();
-        groundY = (wRect.top - rect.top) + wRect.height * 0.85;
-        scrollDistance = 480;
-
-        render();
-      }
-
-      function render() {
-        const globalProgress = Math.min(Math.max(window.scrollY / scrollDistance, 0), 1);
-
-        shapeEls.forEach((el, i) => {
-          const b = base[i];
-          const start = pStart[i] || 0;
-          const end = Math.min(start + pSpan, 1);
-          const local = Math.min(Math.max((globalProgress - start) / (end - start), 0), 1);
-          const eased = easeInOut(local);
-
-          const initialCenterY = b.y + b.h / 2;
-          const finalCenterY = groundY - b.h * 0.5 + finalYOffset[i];
-          const currentCenterY = initialCenterY + (finalCenterY - initialCenterY) * eased;
-          const rot = finalRotate[i] * eased;
-
-          el.style.transform = `translate(${b.x}px, ${currentCenterY - b.h / 2}px) rotate(${rot}deg)`;
-        });
-
-        ticking = false;
-      }
-
-      function onScroll() {
-        if (!ticking) {
-          ticking = true;
-          requestAnimationFrame(render);
-        }
-      }
-
-      function init() {
-        measure();
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', measure);
-      }
-
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(init);
-      } else {
-        init();
-      }
-    })();
-
     // ---- 프로젝트 클릭 → 작은 창 팝업 (이미지 갤러리 + 드래그/스크롤/휠로 다음 장 이동) ----
     (function () {
       const modal = document.getElementById('projectModal');
@@ -391,6 +279,7 @@
       const modalNum = document.getElementById('modalNum');
       const modalTitle = document.getElementById('modalTitle');
       const modalTag = document.getElementById('modalTag');
+      const modalDesc = document.getElementById('modalDesc');
       if (!modal || !track) return;
 
       let dots = [];
@@ -425,24 +314,13 @@
         }
       }
 
-      // 프로젝트 카드의 data-images(콤마로 구분된 이미지 URL 목록)를 읽어 슬라이드를 생성:
-      // 1번째 슬라이드 = 첫 이미지 + STRATEGY 텍스트(우측), 이후 슬라이드 = 나머지 이미지들
+      // 프로젝트 카드의 data-images(콤마로 구분된 이미지 URL 목록)를 읽어 이미지 슬라이드를 생성
       // → 이미지를 더 추가하고 싶으면 각 카드의 data-images="url1,url2,url3" 값에 URL만 더 넣으면 됨
-      function buildSlides(imagesAttr, alt, desc) {
+      function buildSlides(imagesAttr, alt) {
         track.innerHTML = '';
         const urls = (imagesAttr || '').split(',').map((s) => s.trim()).filter(Boolean);
 
-        const first = document.createElement('section');
-        first.className = 'modal-page modal-page-image';
-        first.innerHTML = `
-          <img src="${urls[0] || ''}" alt="${alt || ''}" loading="lazy">
-          <div class="modal-strategy-overlay">
-            <span class="modal-eyebrow">STRATEGY</span>
-            <p class="modal-strategy-text">${desc}</p>
-          </div>`;
-        track.appendChild(first);
-
-        urls.slice(1).forEach((url) => {
+        urls.forEach((url) => {
           const section = document.createElement('section');
           section.className = 'modal-page modal-page-image';
           const img = document.createElement('img');
@@ -460,13 +338,13 @@
         const tag = tile.querySelector('.work-tag');
         const imgEl = tile.querySelector('.work-thumb');
         const tagText = tag ? tag.textContent : '';
-        const desc = `${tagText} 프로젝트에서 브랜드의 톤앤매너와 메시지를 분석하고, 3D와 모션으로 시각 언어를 만들었습니다.`;
 
         modalNum.textContent = num ? num.textContent : '';
         modalTitle.innerHTML = name ? name.innerHTML : '';
         modalTag.textContent = tagText;
+        modalDesc.textContent = `${tagText} 프로젝트에서 브랜드의 톤앤매너와 메시지를 분석하고, 3D와 모션으로 시각 언어를 만들었습니다.`;
 
-        buildSlides(tile.dataset.images, imgEl ? imgEl.alt : '', desc);
+        buildSlides(tile.dataset.images, imgEl ? imgEl.alt : '');
         rebuildDots();
 
         modal.classList.add('is-open');
