@@ -113,7 +113,7 @@
     <h2 class="section-title">FEATURED<br>PROJECTS</h2>
 
     <div class="works-grid grid">
-      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-01.png">
+      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-01.png,https://kmheen.github.io/images/project-01-2.png,https://kmheen.github.io/images/project-01-3.png,https://kmheen.github.io/images/project-01-4.png">
         <div class="card-media"><img class="work-thumb" src="https://kmheen.github.io/images/project-01.png" alt="OliveYoung Black Friday" loading="lazy"></div>
         <div class="card-info">
           <span class="card-tag work-num" style="--tag:#FFD400">01</span>
@@ -229,11 +229,8 @@
       </div>
 
       <div class="project-modal-track" id="modalTrack">
-        <!-- 이미지 슬라이드는 JS가 프로젝트별 이미지 목록을 읽어 여기에 자동으로 채웁니다 -->
-        <section class="modal-page modal-page-strategy">
-          <span class="modal-eyebrow">STRATEGY</span>
-          <p class="modal-strategy-text" id="modalDesc"></p>
-        </section>
+        <!-- 슬라이드는 JS가 프로젝트별 이미지 목록을 읽어 여기에 자동으로 채웁니다:
+             1번째 슬라이드 = 첫 이미지 + STRATEGY 텍스트(우측), 이후 슬라이드 = 나머지 이미지들 -->
       </div>
 
       <div class="project-modal-nav">
@@ -391,12 +388,10 @@
       const modal = document.getElementById('projectModal');
       const track = document.getElementById('modalTrack');
       const dotsWrap = document.getElementById('modalDots');
-      const strategySlide = track ? track.querySelector('.modal-page-strategy') : null;
       const modalNum = document.getElementById('modalNum');
       const modalTitle = document.getElementById('modalTitle');
       const modalTag = document.getElementById('modalTag');
-      const modalDesc = document.getElementById('modalDesc');
-      if (!modal || !track || !strategySlide) return;
+      if (!modal || !track) return;
 
       let dots = [];
 
@@ -430,13 +425,24 @@
         }
       }
 
-      // 프로젝트 카드의 data-images(콤마로 구분된 이미지 URL 목록)를 읽어
-      // 이미지 슬라이드를 필요한 만큼 생성 → 이미지를 더 추가하고 싶으면
-      // 각 카드의 data-images="url1,url2,url3" 값에 URL만 더 넣어주면 됨
-      function buildImageSlides(imagesAttr, alt) {
-        track.querySelectorAll('.modal-page-image').forEach((el) => el.remove());
+      // 프로젝트 카드의 data-images(콤마로 구분된 이미지 URL 목록)를 읽어 슬라이드를 생성:
+      // 1번째 슬라이드 = 첫 이미지 + STRATEGY 텍스트(우측), 이후 슬라이드 = 나머지 이미지들
+      // → 이미지를 더 추가하고 싶으면 각 카드의 data-images="url1,url2,url3" 값에 URL만 더 넣으면 됨
+      function buildSlides(imagesAttr, alt, desc) {
+        track.innerHTML = '';
         const urls = (imagesAttr || '').split(',').map((s) => s.trim()).filter(Boolean);
-        urls.forEach((url) => {
+
+        const first = document.createElement('section');
+        first.className = 'modal-page modal-page-split';
+        first.innerHTML = `
+          <div class="split-media"><img src="${urls[0] || ''}" alt="${alt || ''}" loading="lazy"></div>
+          <div class="split-content">
+            <span class="modal-eyebrow">STRATEGY</span>
+            <p class="modal-strategy-text">${desc}</p>
+          </div>`;
+        track.appendChild(first);
+
+        urls.slice(1).forEach((url) => {
           const section = document.createElement('section');
           section.className = 'modal-page modal-page-image';
           const img = document.createElement('img');
@@ -444,7 +450,7 @@
           img.alt = alt || '';
           img.loading = 'lazy';
           section.appendChild(img);
-          track.insertBefore(section, strategySlide);
+          track.appendChild(section);
         });
       }
 
@@ -453,13 +459,14 @@
         const name = tile.querySelector('.work-name');
         const tag = tile.querySelector('.work-tag');
         const imgEl = tile.querySelector('.work-thumb');
+        const tagText = tag ? tag.textContent : '';
+        const desc = `${tagText} 프로젝트에서 브랜드의 톤앤매너와 메시지를 분석하고, 3D와 모션으로 시각 언어를 만들었습니다.`;
 
         modalNum.textContent = num ? num.textContent : '';
         modalTitle.innerHTML = name ? name.innerHTML : '';
-        modalTag.textContent = tag ? tag.textContent : '';
-        modalDesc.textContent = `${tag ? tag.textContent : ''} 프로젝트에서 브랜드의 톤앤매너와 메시지를 분석하고, 3D와 모션으로 시각 언어를 만들었습니다.`;
+        modalTag.textContent = tagText;
 
-        buildImageSlides(tile.dataset.images, imgEl ? imgEl.alt : '');
+        buildSlides(tile.dataset.images, imgEl ? imgEl.alt : '', desc);
         rebuildDots();
 
         modal.classList.add('is-open');
