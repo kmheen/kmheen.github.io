@@ -171,14 +171,14 @@ a { color: inherit; text-decoration: none; }
   z-index: 4;
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  overflow: hidden;
+  overflow: visible;
   white-space: nowrap;
   text-align: left;
   font-family: "Josefin Sans", var(--font-display);
   font-weight: 700;
   font-size: clamp(60px, 13vw, 180px);
   line-height: 1;
-  padding: 24px 0 80px;
+  padding: 40px 0 120px;
 }
 
 .portfolio-wordmark span {
@@ -288,7 +288,7 @@ a { color: inherit; text-decoration: none; }
 
 .works-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 2px;
   background: var(--line);
 }
@@ -418,76 +418,73 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* =========================================================
-   PROJECT MODAL
+   PROJECT CASE STUDY (풀스크린, 스크롤로 다음 장 이동)
    ========================================================= */
 .project-modal {
   position: fixed;
   inset: 0;
   z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+  background: var(--paper);
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
 }
 
 .project-modal.is-open {
   opacity: 1;
-  pointer-events: auto;
-}
-
-.project-modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(10, 10, 10, 0.72);
-}
-
-.project-modal-panel {
-  position: relative;
-  background: var(--paper);
-  width: min(920px, 100%);
-  max-height: 88vh;
-  overflow-y: auto;
-  border-radius: 16px;
-  transform: translateY(16px) scale(0.98);
-  transition: transform 0.25s ease;
-}
-
-.project-modal.is-open .project-modal-panel {
-  transform: translateY(0) scale(1);
+  visibility: visible;
 }
 
 .project-modal-close {
-  position: absolute;
-  top: 16px; right: 16px;
-  width: 40px; height: 40px;
+  position: fixed;
+  top: 24px; right: 24px;
+  width: 44px; height: 44px;
   border-radius: 50%;
   border: none;
   background: var(--ink);
   color: #fff;
-  font-size: 16px;
+  font-size: 17px;
   cursor: pointer;
-  z-index: 2;
+  z-index: 3;
 }
 .project-modal-close:hover { background: var(--accent); }
 
-.project-modal-media {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  background: #eee;
-  overflow: hidden;
-  border-radius: 16px 16px 0 0;
+.project-modal-scroll {
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
 }
 
-.project-modal-media img {
+.modal-page {
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--gap);
+  position: relative;
+}
+
+.modal-page-hero {
+  padding: 0;
+  justify-content: flex-end;
+}
+
+.modal-page-hero img {
+  position: absolute;
+  inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  display: block;
 }
 
-.project-modal-body { padding: 32px; }
+.modal-hero-info {
+  position: relative;
+  z-index: 1;
+  padding: var(--gap) var(--gap) 64px;
+  color: #fff;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent 65%);
+}
 
 .project-modal-num {
   display: block;
@@ -500,8 +497,8 @@ a { color: inherit; text-decoration: none; }
 
 .project-modal-title {
   font-family: var(--font-display);
-  font-size: clamp(28px, 4vw, 44px);
-  line-height: 1.05;
+  font-size: clamp(32px, 6vw, 72px);
+  line-height: 1.02;
   margin-bottom: 10px;
 }
 
@@ -509,7 +506,39 @@ a { color: inherit; text-decoration: none; }
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.06em;
-  color: var(--muted);
+  opacity: 0.85;
+}
+
+.modal-scroll-hint {
+  position: absolute;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #fff;
+  opacity: 0.8;
+}
+
+.modal-page-strategy {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.modal-eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+.modal-strategy-text {
+  font-size: clamp(20px, 3vw, 32px);
+  line-height: 1.6;
+  font-weight: 500;
 }
 
 /* =========================================================
