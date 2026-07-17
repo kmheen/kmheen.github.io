@@ -433,10 +433,10 @@
         const urls = (imagesAttr || '').split(',').map((s) => s.trim()).filter(Boolean);
 
         const first = document.createElement('section');
-        first.className = 'modal-page modal-page-split';
+        first.className = 'modal-page modal-page-image';
         first.innerHTML = `
-          <div class="split-media"><img src="${urls[0] || ''}" alt="${alt || ''}" loading="lazy"></div>
-          <div class="split-content">
+          <img src="${urls[0] || ''}" alt="${alt || ''}" loading="lazy">
+          <div class="modal-strategy-overlay">
             <span class="modal-eyebrow">STRATEGY</span>
             <p class="modal-strategy-text">${desc}</p>
           </div>`;
