@@ -6,7 +6,7 @@
 <title>KIM CHAEYEON — 3D / Motion Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Baloo+2:wght@700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -62,15 +62,32 @@
       </div>
     </div>
 
-    <h2 class="portfolio-wordmark" id="wordmark">PORTFOLIO</h2>
+    <h2 class="portfolio-wordmark" id="wordmark"><span id="wordmarkText">PORTFOLIO</span></h2>
 
     <!-- 떨어지는 도형들: 초기 위치는 CSS, 낙하 후 위치는 JS(transform)가 제어 -->
-    <div class="shape shape-circle"   data-shape="circle"></div>
-    <div class="shape shape-hex"      data-shape="hex"></div>
-    <div class="shape shape-blob shape-blob-a" data-shape="circle"></div>
-    <div class="shape shape-blob shape-blob-b" data-shape="circle"></div>
-    <div class="shape shape-banner shape-banner-a" data-shape="banner">AVAILABLE FOR PROJECTS</div>
-    <div class="shape shape-banner shape-banner-b" data-shape="banner">VIEW SELECTED WORK</div>
+    <div class="shape shape-circle" data-shape="circle"></div>
+    <div class="shape shape-square" data-shape="square"></div>
+
+    <svg class="shape shape-triangle" data-shape="triangle" viewBox="0 0 100 100">
+      <path d="M57.2,20.76 L82.8,73.24 Q90,88 75.6,88 L24.4,88 Q10,88 17.2,73.24 L42.8,20.76 Q50,6 57.2,20.76 Z" fill="currentColor"/>
+    </svg>
+
+    <svg class="shape shape-clover" data-shape="clover" viewBox="0 0 100 100">
+      <circle cx="50" cy="27" r="26" fill="currentColor"/>
+      <circle cx="73" cy="50" r="26" fill="currentColor"/>
+      <circle cx="50" cy="73" r="26" fill="currentColor"/>
+      <circle cx="27" cy="50" r="26" fill="currentColor"/>
+      <circle cx="50" cy="50" r="20" fill="currentColor"/>
+    </svg>
+
+    <svg class="shape shape-star" data-shape="star" viewBox="0 0 100 100">
+      <circle cx="50" cy="22" r="25" fill="currentColor"/>
+      <circle cx="76" cy="40" r="25" fill="currentColor"/>
+      <circle cx="67" cy="72" r="25" fill="currentColor"/>
+      <circle cx="33" cy="72" r="25" fill="currentColor"/>
+      <circle cx="24" cy="40" r="25" fill="currentColor"/>
+      <circle cx="50" cy="50" r="20" fill="currentColor"/>
+    </svg>
   </section>
 
   <!-- ============ MARQUEE ============ -->
@@ -224,6 +241,26 @@
 
   <script src="https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js"></script>
   <script>
+    // ---- PORTFOLIO 워드마크를 화면 가로폭에 꽉 차게 늘리기 ----
+    function fitWordmark() {
+      const wrap = document.getElementById('wordmark');
+      const text = document.getElementById('wordmarkText');
+      if (!wrap || !text) return;
+      text.style.display = 'inline-block';
+      text.style.transform = 'scaleX(1)';
+      const wrapWidth = wrap.clientWidth;
+      const textWidth = text.getBoundingClientRect().width;
+      if (textWidth > 0) {
+        text.style.transformOrigin = 'left center';
+        text.style.transform = `scaleX(${wrapWidth / textWidth})`;
+      }
+    }
+    window.addEventListener('load', fitWordmark);
+    window.addEventListener('resize', fitWordmark);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fitWordmark);
+    }
+
     // ---- 도형 낙하 + 스태킹 인터랙션 ----
     (function () {
       const stageEl = document.querySelector('.labs-hero');
@@ -240,15 +277,15 @@
 
       let bodies = [];
       let triggered = false;
-      let rafId = null;
 
       function buildBodies() {
         const rect = stageEl.getBoundingClientRect();
         const wRect = wordmarkEl.getBoundingClientRect();
-        const groundY = (wRect.top - rect.top) + wRect.height * 0.4; // PORTFOLIO 글자 뒤로 겹치는 위치
+        // PORTFOLIO 글자 뒤로 완전히 숨도록 바닥선을 글자 하단 가까이로 내림
+        const groundY = (wRect.top - rect.top) + wRect.height * 0.88;
         const width = rect.width;
 
-        const ground = Bodies.rectangle(width / 2, groundY + 40, width * 2, 80, { isStatic: true });
+        const ground = Bodies.rectangle(width / 2, groundY + 60, width * 2, 120, { isStatic: true });
         const leftWall = Bodies.rectangle(-30, groundY / 2, 60, groundY * 2, { isStatic: true });
         const rightWall = Bodies.rectangle(width + 30, groundY / 2, 60, groundY * 2, { isStatic: true });
         World.add(world, [ground, leftWall, rightWall]);
@@ -258,15 +295,15 @@
           const cx = r.left - rect.left + r.width / 2;
           const cy = r.top - rect.top + r.height / 2;
           const type = el.dataset.shape;
-          const opts = { restitution: 0.35, friction: 0.55, frictionAir: 0.012 };
+          const opts = { restitution: 0.4, friction: 0.5, frictionAir: 0.012 };
 
           let body;
-          if (type === 'hex') {
-            body = Bodies.polygon(cx, cy, 6, r.width / 2, opts);
-          } else if (type === 'banner') {
-            body = Bodies.rectangle(cx, cy, r.width, r.height, Object.assign({}, opts, { chamfer: { radius: r.height / 2 } }));
-            Body.setAngle(body, ((el.classList.contains('shape-banner-b') ? 8 : -10) * Math.PI) / 180);
+          if (type === 'square') {
+            body = Bodies.rectangle(cx, cy, r.width, r.height, Object.assign({}, opts, { chamfer: { radius: r.width * 0.18 } }));
+          } else if (type === 'triangle') {
+            body = Bodies.polygon(cx, cy, 3, r.width / 2, opts);
           } else {
+            // circle, clover, star: 원형 바디로 근사
             body = Bodies.circle(cx, cy, r.width / 2, opts);
           }
 
@@ -274,6 +311,7 @@
           body.__w = r.width;
           body.__h = r.height;
 
+          el.style.position = 'absolute';
           el.style.left = '0px';
           el.style.top = '0px';
           el.style.transform = `translate(${cx - r.width / 2}px, ${cy - r.height / 2}px)`;
@@ -295,13 +333,12 @@
       function loop() {
         Engine.update(engine, 1000 / 60);
         render();
-        rafId = requestAnimationFrame(loop);
+        requestAnimationFrame(loop);
       }
 
       function trigger() {
         if (triggered) return;
         triggered = true;
-        shapeEls.forEach((el) => { el.style.position = 'absolute'; });
         buildBodies();
         loop();
         window.removeEventListener('scroll', onScroll);
