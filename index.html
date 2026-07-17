@@ -205,19 +205,25 @@
     </div>
   </section>
 
-  <!-- ============ PROJECT MODAL ============ -->
+  <!-- ============ PROJECT CASE STUDY (풀스크린, 스크롤로 다음 장 이동) ============ -->
   <div class="project-modal" id="projectModal" aria-hidden="true">
-    <div class="project-modal-backdrop" data-modal-close></div>
-    <div class="project-modal-panel" role="dialog" aria-modal="true">
-      <button type="button" class="project-modal-close" data-modal-close aria-label="닫기">✕</button>
-      <div class="project-modal-media">
+    <button type="button" class="project-modal-close" data-modal-close aria-label="닫기">✕</button>
+
+    <div class="project-modal-scroll" id="modalScroll">
+      <section class="modal-page modal-page-hero">
         <img id="modalImage" src="" alt="">
-      </div>
-      <div class="project-modal-body">
-        <span class="project-modal-num" id="modalNum"></span>
-        <h3 class="project-modal-title" id="modalTitle"></h3>
-        <span class="project-modal-tag" id="modalTag"></span>
-      </div>
+        <div class="modal-hero-info">
+          <span class="project-modal-num" id="modalNum"></span>
+          <h2 class="project-modal-title" id="modalTitle"></h2>
+          <span class="project-modal-tag" id="modalTag"></span>
+        </div>
+        <span class="modal-scroll-hint">SCROLL TO CONTINUE ↓</span>
+      </section>
+
+      <section class="modal-page modal-page-strategy">
+        <span class="modal-eyebrow">STRATEGY</span>
+        <p class="modal-strategy-text" id="modalDesc"></p>
+      </section>
     </div>
   </div>
 
@@ -266,18 +272,17 @@
 
   <script src="https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js"></script>
   <script>
-    // ---- PORTFOLIO 워드마크를 화면 가로폭에 꽉 차게 늘리기 ----
+    // ---- PORTFOLIO 워드마크를 화면 가로폭에 꽉 차게 늘리기 (비율 유지, 폰트 왜곡 없이) ----
     function fitWordmark() {
       const wrap = document.getElementById('wordmark');
       const text = document.getElementById('wordmarkText');
       if (!wrap || !text) return;
-      text.style.display = 'inline-block';
-      text.style.transform = 'scaleX(1)';
+      text.style.transform = 'scale(1)';
       const wrapWidth = wrap.clientWidth;
       const textWidth = text.getBoundingClientRect().width;
       if (textWidth > 0) {
         text.style.transformOrigin = 'left center';
-        text.style.transform = `scaleX(${wrapWidth / textWidth})`;
+        text.style.transform = `scale(${wrapWidth / textWidth})`;
       }
     }
     window.addEventListener('load', fitWordmark);
@@ -423,13 +428,15 @@
       }
     })();
 
-    // ---- 프로젝트 클릭 → 케이스 스터디 팝업 ----
+    // ---- 프로젝트 클릭 → 풀스크린 케이스 스터디 (스크롤로 다음 장 이동) ----
     (function () {
       const modal = document.getElementById('projectModal');
+      const modalScroll = document.getElementById('modalScroll');
       const modalImage = document.getElementById('modalImage');
       const modalNum = document.getElementById('modalNum');
       const modalTitle = document.getElementById('modalTitle');
       const modalTag = document.getElementById('modalTag');
+      const modalDesc = document.getElementById('modalDesc');
       if (!modal) return;
 
       function openModal(tile) {
@@ -443,10 +450,12 @@
         modalNum.textContent = num ? num.textContent : '';
         modalTitle.innerHTML = name ? name.innerHTML : '';
         modalTag.textContent = tag ? tag.textContent : '';
+        modalDesc.textContent = `${tag ? tag.textContent : ''} 프로젝트에서 브랜드의 톤앤매너와 메시지를 분석하고, 3D와 모션으로 시각 언어를 만들었습니다.`;
 
         modal.classList.add('is-open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        if (modalScroll) modalScroll.scrollTop = 0;
       }
 
       function closeModal() {
