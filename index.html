@@ -6,7 +6,7 @@
 <title>KIM CHAEYEON — 3D / Motion Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Baloo+2:wght@700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -66,10 +66,11 @@
 
     <!-- 떨어지는 도형들: 초기 위치는 CSS, 낙하 후 위치는 JS(transform)가 제어 -->
     <div class="shape shape-circle" data-shape="circle"></div>
+    <div class="shape shape-circle shape-circle-b" data-shape="circle"></div>
     <div class="shape shape-square" data-shape="square"></div>
 
     <svg class="shape shape-triangle" data-shape="triangle" viewBox="0 0 100 100">
-      <path d="M57.2,20.76 L82.8,73.24 Q90,88 75.6,88 L24.4,88 Q10,88 17.2,73.24 L42.8,20.76 Q50,6 57.2,20.76 Z" fill="currentColor"/>
+      <path d="M57.48,16.96 L84.09,62.96 Q91.57,76 76.61,76 L23.39,76 Q8.43,76 15.91,62.96 L42.52,16.96 Q50,4 57.48,16.96 Z" fill="currentColor"/>
     </svg>
 
     <svg class="shape shape-clover" data-shape="clover" viewBox="0 0 100 100">
@@ -80,13 +81,21 @@
       <circle cx="50" cy="50" r="20" fill="currentColor"/>
     </svg>
 
-    <svg class="shape shape-star" data-shape="star" viewBox="0 0 100 100">
-      <circle cx="50" cy="22" r="25" fill="currentColor"/>
-      <circle cx="76" cy="40" r="25" fill="currentColor"/>
-      <circle cx="67" cy="72" r="25" fill="currentColor"/>
-      <circle cx="33" cy="72" r="25" fill="currentColor"/>
-      <circle cx="24" cy="40" r="25" fill="currentColor"/>
+    <svg class="shape shape-clover shape-clover-b" data-shape="clover" viewBox="0 0 100 100">
+      <circle cx="50" cy="27" r="26" fill="currentColor"/>
+      <circle cx="73" cy="50" r="26" fill="currentColor"/>
+      <circle cx="50" cy="73" r="26" fill="currentColor"/>
+      <circle cx="27" cy="50" r="26" fill="currentColor"/>
       <circle cx="50" cy="50" r="20" fill="currentColor"/>
+    </svg>
+
+    <svg class="shape shape-star" data-shape="star" viewBox="0 0 100 100">
+      <circle cx="50" cy="24" r="20" fill="currentColor"/>
+      <circle cx="74.73" cy="41.97" r="20" fill="currentColor"/>
+      <circle cx="65.29" cy="71.03" r="20" fill="currentColor"/>
+      <circle cx="34.71" cy="71.03" r="20" fill="currentColor"/>
+      <circle cx="25.27" cy="41.97" r="20" fill="currentColor"/>
+      <circle cx="50" cy="50" r="18" fill="currentColor"/>
     </svg>
   </section>
 
@@ -261,7 +270,7 @@
       document.fonts.ready.then(fitWordmark);
     }
 
-    // ---- 도형 낙하 + 스태킹 인터랙션 ----
+    // ---- 도형 낙하 + 스태킹 + 역스크롤 복귀 인터랙션 ----
     (function () {
       const stageEl = document.querySelector('.labs-hero');
       const wordmarkEl = document.getElementById('wordmark');
@@ -270,51 +279,66 @@
 
       if (!stageEl || !wordmarkEl || !shapeEls.length || !window.Matter || reduceMotion) return;
 
-      const { Engine, World, Bodies, Body } = Matter;
+      const { Engine, World, Bodies } = Matter;
       const engine = Engine.create();
       engine.gravity.y = 1;
       const world = engine.world;
 
       let bodies = [];
       let triggered = false;
+      let rafId = null;
+      let initialLayout = [];
+
+      // 낙하 전 원래 좌표를 저장해둠 (다시 위로 스크롤했을 때 돌아갈 자리)
+      // + left/top을 0으로 고정해 이후 transform 이 절대좌표 기준으로 동작하게 함
+      function captureInitialLayout() {
+        const rect = stageEl.getBoundingClientRect();
+        initialLayout = shapeEls.map((el) => {
+          const r = el.getBoundingClientRect();
+          const x = r.left - rect.left;
+          const y = r.top - rect.top;
+          el.style.left = '0px';
+          el.style.top = '0px';
+          el.style.transform = `translate(${x}px, ${y}px)`;
+          return { x, y, w: r.width, h: r.height };
+        });
+      }
 
       function buildBodies() {
         const rect = stageEl.getBoundingClientRect();
         const wRect = wordmarkEl.getBoundingClientRect();
-        // PORTFOLIO 글자 뒤로 완전히 숨도록 바닥선을 글자 하단 가까이로 내림
         const groundY = (wRect.top - rect.top) + wRect.height * 0.88;
         const width = rect.width;
+
+        World.clear(world, false);
 
         const ground = Bodies.rectangle(width / 2, groundY + 60, width * 2, 120, { isStatic: true });
         const leftWall = Bodies.rectangle(-30, groundY / 2, 60, groundY * 2, { isStatic: true });
         const rightWall = Bodies.rectangle(width + 30, groundY / 2, 60, groundY * 2, { isStatic: true });
         World.add(world, [ground, leftWall, rightWall]);
 
-        bodies = shapeEls.map((el) => {
-          const r = el.getBoundingClientRect();
-          const cx = r.left - rect.left + r.width / 2;
-          const cy = r.top - rect.top + r.height / 2;
+        bodies = shapeEls.map((el, i) => {
+          const layout = initialLayout[i];
+          const cx = layout.x + layout.w / 2;
+          const cy = layout.y + layout.h / 2;
           const type = el.dataset.shape;
           const opts = { restitution: 0.4, friction: 0.5, frictionAir: 0.012 };
 
           let body;
           if (type === 'square') {
-            body = Bodies.rectangle(cx, cy, r.width, r.height, Object.assign({}, opts, { chamfer: { radius: r.width * 0.18 } }));
+            body = Bodies.rectangle(cx, cy, layout.w, layout.h, Object.assign({}, opts, { chamfer: { radius: layout.w * 0.18 } }));
           } else if (type === 'triangle') {
-            body = Bodies.polygon(cx, cy, 3, r.width / 2, opts);
+            body = Bodies.polygon(cx, cy, 3, layout.w / 2, opts);
           } else {
-            // circle, clover, star: 원형 바디로 근사
-            body = Bodies.circle(cx, cy, r.width / 2, opts);
+            body = Bodies.circle(cx, cy, layout.w / 2, opts);
           }
 
           body.__el = el;
-          body.__w = r.width;
-          body.__h = r.height;
+          body.__w = layout.w;
+          body.__h = layout.h;
 
-          el.style.position = 'absolute';
-          el.style.left = '0px';
-          el.style.top = '0px';
-          el.style.transform = `translate(${cx - r.width / 2}px, ${cy - r.height / 2}px)`;
+          el.style.transition = '';
+          el.style.transform = `translate(${cx - layout.w / 2}px, ${cy - layout.h / 2}px)`;
 
           World.add(world, body);
           return body;
@@ -333,22 +357,54 @@
       function loop() {
         Engine.update(engine, 1000 / 60);
         render();
-        requestAnimationFrame(loop);
+        rafId = requestAnimationFrame(loop);
       }
 
-      function trigger() {
+      function startLoop() { if (rafId === null) loop(); }
+      function stopLoop() { if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } }
+
+      function fall() {
         if (triggered) return;
         triggered = true;
         buildBodies();
-        loop();
-        window.removeEventListener('scroll', onScroll);
+        startLoop();
+      }
+
+      // 다시 위로 스크롤하면 도형이 원래 자리로 딸려 올라감
+      function riseBack() {
+        if (!triggered) return;
+        triggered = false;
+        stopLoop();
+        World.clear(world, false);
+        bodies = [];
+        shapeEls.forEach((el, i) => {
+          const layout = initialLayout[i];
+          el.style.transition = 'transform 0.7s cubic-bezier(.22,.68,0,1.01)';
+          el.style.transform = `translate(${layout.x}px, ${layout.y}px) rotate(0deg)`;
+        });
       }
 
       function onScroll() {
-        if (window.scrollY > stageEl.offsetHeight * 0.15) trigger();
+        const downThreshold = stageEl.offsetHeight * 0.15;
+        const upThreshold = stageEl.offsetHeight * 0.04;
+        if (!triggered && window.scrollY > downThreshold) {
+          fall();
+        } else if (triggered && window.scrollY <= upThreshold) {
+          riseBack();
+        }
       }
 
-      window.addEventListener('scroll', onScroll, { passive: true });
+      function init() {
+        captureInitialLayout();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', () => { if (!triggered) captureInitialLayout(); });
+      }
+
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(init);
+      } else {
+        init();
+      }
     })();
 
     // ---- 무드 로테이터 ----
