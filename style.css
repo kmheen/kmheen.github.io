@@ -473,14 +473,22 @@ a { color: inherit; text-decoration: none; }
 }
 .project-modal-close:hover { background: var(--accent); }
 
-.project-modal-scroll {
+.project-modal-track {
+  display: flex;
   height: 100vh;
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  cursor: grab;
 }
+.project-modal-track::-webkit-scrollbar { display: none; }
+.project-modal-track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
 
 .modal-page {
+  flex: 0 0 100%;
+  width: 100%;
   height: 100vh;
   scroll-snap-align: start;
   display: flex;
@@ -533,16 +541,34 @@ a { color: inherit; text-decoration: none; }
   opacity: 0.85;
 }
 
-.modal-scroll-hint {
+.project-modal-nav {
   position: absolute;
-  bottom: 24px; left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-  font-size: 11px;
-  font-weight: 600;
+  bottom: 24px; left: 0; right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  pointer-events: none;
+}
+
+.modal-dots { display: flex; gap: 8px; pointer-events: auto; }
+
+.modal-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(20, 20, 20, 0.2);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+.modal-dot.is-active { background: var(--ink); transform: scale(1.3); }
+
+.modal-hint {
+  font-size: 10.5px;
+  font-weight: 700;
   letter-spacing: 0.12em;
-  color: #fff;
-  opacity: 0.8;
+  color: var(--muted);
 }
 
 .modal-page-strategy {
