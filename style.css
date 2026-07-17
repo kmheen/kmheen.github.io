@@ -94,7 +94,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .shapes-stage {
-  height: 340px;
+  height: 580px;
 }
 
 .labs-intro {
@@ -194,45 +194,45 @@ a { color: inherit; text-decoration: none; }
 }
 
 .shape-circle {
-  top: -290px; left: -4%;
+  top: -40px; left: -4%;
   width: 580px; height: 580px;
   border-radius: 50%;
   background: #ff5da2;
 }
 
 .shape-circle-b {
-  top: -280px; left: 11%;
+  top: -35px; left: 11%;
   width: 530px; height: 530px;
   background: #6c7bff;
 }
 
 .shape-square {
-  top: -220px; left: 26%;
+  top: -25px; left: 26%;
   width: 500px; height: 500px;
   border-radius: 22%;
   background: #3fe8b7;
 }
 
 .shape-triangle {
-  top: -320px; left: 40%;
+  top: -45px; left: 40%;
   width: 600px; height: 600px;
   color: #9b6bff;
 }
 
 .shape-clover {
-  top: -300px; left: 56%;
+  top: -30px; left: 56%;
   width: 580px; height: 580px;
   color: #ffa53e;
 }
 
 .shape-clover-b {
-  top: -260px; left: 70%;
+  top: -20px; left: 70%;
   width: 530px; height: 530px;
   color: #c7e057;
 }
 
 .shape-star {
-  top: -270px; left: 84%;
+  top: -30px; left: 84%;
   width: 530px; height: 530px;
   color: #ff5c45;
 }
@@ -442,16 +442,19 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* =========================================================
-   PROJECT CASE STUDY (풀스크린, 스크롤로 다음 장 이동)
+   PROJECT CASE STUDY (블러 배경 위 작은 창 팝업)
    ========================================================= */
 .project-modal {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 4vw;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .project-modal.is-open {
@@ -459,23 +462,82 @@ a { color: inherit; text-decoration: none; }
   visibility: visible;
 }
 
+.project-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* 기존 화면 비율(16:10)을 유지한 채 더 작은 창으로 표시 */
+.project-modal-panel {
+  position: relative;
+  width: min(1100px, 92vw);
+  max-height: 86vh;
+  aspect-ratio: 16 / 10;
+  background: var(--paper);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.94);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(.16,.8,.24,1), opacity 0.3s ease;
+}
+
+.project-modal.is-open .project-modal-panel {
+  transform: scale(1);
+  opacity: 1;
+}
+
 .project-modal-close {
-  position: fixed;
-  top: 24px; right: 24px;
-  width: 44px; height: 44px;
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 38px; height: 38px;
   border-radius: 50%;
   border: none;
   background: var(--ink);
   color: #fff;
-  font-size: 17px;
+  font-size: 15px;
   cursor: pointer;
-  z-index: 3;
+  z-index: 5;
 }
 .project-modal-close:hover { background: var(--accent); }
 
+.project-modal-head {
+  padding: 22px 60px 16px 28px;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.project-modal-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.project-modal-title {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.6vw, 30px);
+  line-height: 1.08;
+  margin-bottom: 6px;
+}
+
+.project-modal-tag {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
 .project-modal-track {
+  flex: 1;
   display: flex;
-  height: 100vh;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
@@ -489,70 +551,36 @@ a { color: inherit; text-decoration: none; }
 .modal-page {
   flex: 0 0 100%;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--gap);
+  padding: 28px;
   position: relative;
 }
 
-.modal-page-hero {
+.modal-page-image {
   padding: 0;
-  justify-content: flex-end;
+  background: #eee;
 }
 
-.modal-page-hero img {
-  position: absolute;
-  inset: 0;
+.modal-page-image img {
   width: 100%; height: 100%;
   object-fit: cover;
-}
-
-.modal-hero-info {
-  position: relative;
-  z-index: 1;
-  padding: var(--gap) var(--gap) 64px;
-  color: #fff;
-  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent 65%);
-}
-
-.project-modal-num {
   display: block;
-  font-family: var(--font-display);
-  font-size: 13px;
-  letter-spacing: 1px;
-  color: var(--accent);
-  margin-bottom: 8px;
-}
-
-.project-modal-title {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 6vw, 72px);
-  line-height: 1.02;
-  margin-bottom: 10px;
-}
-
-.project-modal-tag {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  opacity: 0.85;
 }
 
 .project-modal-nav {
-  position: absolute;
-  bottom: 24px; left: 0; right: 0;
-  z-index: 3;
+  flex-shrink: 0;
+  padding: 12px 0 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
-  pointer-events: none;
+  gap: 16px;
 }
 
-.modal-dots { display: flex; gap: 8px; pointer-events: auto; }
+.modal-dots { display: flex; gap: 8px; }
 
 .modal-dot {
   width: 7px; height: 7px;
@@ -565,31 +593,37 @@ a { color: inherit; text-decoration: none; }
 .modal-dot.is-active { background: var(--ink); transform: scale(1.3); }
 
 .modal-hint {
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.12em;
   color: var(--muted);
 }
 
 .modal-page-strategy {
-  max-width: 720px;
+  max-width: 520px;
   margin: 0 auto;
 }
 
 .modal-eyebrow {
   display: block;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 0.16em;
   color: var(--accent);
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .modal-strategy-text {
-  font-size: clamp(20px, 3vw, 32px);
+  font-size: clamp(15px, 1.6vw, 19px);
   line-height: 1.6;
   font-weight: 500;
 }
+
+@media (max-width: 700px) {
+  .project-modal { padding: 0; }
+  .project-modal-panel { width: 100vw; max-height: 100vh; height: 100vh; aspect-ratio: auto; border-radius: 0; }
+}
+
 
 /* =========================================================
    FOOTER / CONTACT
