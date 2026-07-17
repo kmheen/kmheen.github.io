@@ -5,254 +5,327 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KIM CHAEYEON — 3D / Motion Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Preloader -->
-<div class="preloader" id="preloader">
-  <div class="preloader-count" id="preloaderCount">0%</div>
-</div>
+  <!-- ============ HEADER / NAV ============ -->
+  <header class="site-header">
+    <a class="logo" href="#top">
+      <span>KIM</span>
+      <span>CHAEYEON</span>
+    </a>
 
-<!-- Custom cursor (desktop only) -->
-<div class="cursor" id="cursor"><span></span></div>
+    <nav class="main-nav">
+      <a href="#top">HOME</a>
+      <a href="#about">ABOUT</a>
+      <a href="#work">WORK</a>
+    </nav>
 
-<!-- Nav -->
-<header class="nav">
-  <a href="#top" class="nav-logo">KIM CHAEYEON</a>
-  <nav class="nav-links">
-    <a href="#work" data-hover>WORK</a>
-    <a href="#about" data-hover>ABOUT</a>
-    <a href="#contact" data-hover class="nav-cta">CONTACT</a>
-  </nav>
-</header>
-
-<main id="top">
-
-  <!-- HERO -->
-  <section class="hero">
-    <p class="hero-eyebrow reveal">PORTFOLIO 2026 — SEOUL</p>
-    <h1 class="hero-title reveal">
-      3D, MOTION AND AI<br>
-      FOR BRANDS THAT WANT<br>
-      TO BE <span class="outline">REMEMBERED.</span>
-    </h1>
-    <p class="hero-sub reveal">
-      올리브영, 동아제약, 삼립 등과 함께 브랜드의 에너지를 입체적으로 번역하는
-      3D·모션 디자이너 김채연입니다.
-    </p>
-    <div class="hero-scroll reveal">
-      <span>SCROLL TO EXPLORE</span>
-      <div class="scroll-line"></div>
+    <div class="header-right">
+      <div class="social-links">
+        <a href="https://instagram.com/kmheen3d" target="_blank">@KMHEEN3D</a>
+      </div>
+      <div class="availability">
+        <span class="status-dot"></span>
+        AVAILABLE FOR PROJECTS<br>
+        <a href="mailto:00coco0@naver.com">00COCO0@NAVER.COM</a><br>
+        <a href="#contact" class="inquiry-link">SEND PROJECT INQUIRY →</a>
+      </div>
     </div>
+  </header>
+
+  <!-- ============ HERO / SHAPES INTERACTION ============ -->
+  <section class="labs-hero" id="top">
+    <!-- 낙하 전 도형이 자리잡는 공간 확보용 (실제 위치는 JS가 절대좌표로 제어) -->
+    <div class="shapes-stage"></div>
+
+    <div class="labs-intro">
+      <div class="labs-intro-text">
+        <span class="hero-eyebrow">PORTFOLIO 2026 — SEOUL</span>
+        <p class="labs-tagline">
+          <span class="line-strong">3D, MOTION AND AI</span>
+          <span class="line-soft">for brands that want</span>
+          <span class="line-strong">TO BE REMEMBERED<span class="hero-accent">.</span></span>
+        </p>
+        <p class="hero-sub">
+          올리브영, 동아제약, 삼립 등과 함께 브랜드의 에너지를 입체적으로 번역하는<br>
+          3D·모션 디자이너 김채연입니다.
+        </p>
+      </div>
+
+      <div class="scroll-cue">
+        <span class="scroll-label">SCROLL TO EXPLORE</span>
+        <span class="mood-rotator" id="moodRotator">3D DESIGN</span>
+      </div>
+    </div>
+
+    <h2 class="portfolio-wordmark" id="wordmark">PORTFOLIO</h2>
+
+    <!-- 떨어지는 도형들: 초기 위치는 CSS, 낙하 후 위치는 JS(transform)가 제어 -->
+    <div class="shape shape-circle"   data-shape="circle"></div>
+    <div class="shape shape-hex"      data-shape="hex"></div>
+    <div class="shape shape-blob shape-blob-a" data-shape="circle"></div>
+    <div class="shape shape-blob shape-blob-b" data-shape="circle"></div>
+    <div class="shape shape-banner shape-banner-a" data-shape="banner">AVAILABLE FOR PROJECTS</div>
+    <div class="shape shape-banner shape-banner-b" data-shape="banner">VIEW SELECTED WORK</div>
   </section>
 
-  <!-- MARQUEE -->
+  <!-- ============ MARQUEE ============ -->
   <div class="marquee">
     <div class="marquee-track">
-      <span>3D DESIGN</span><span class="dot-sep">●</span><span>MOTION</span><span class="dot-sep">●</span>
-      <span>AI WORKFLOW</span><span class="dot-sep">●</span><span>BRAND CAMPAIGN</span><span class="dot-sep">●</span>
-      <span>3D DESIGN</span><span class="dot-sep">●</span><span>MOTION</span><span class="dot-sep">●</span>
-      <span>AI WORKFLOW</span><span class="dot-sep">●</span><span>BRAND CAMPAIGN</span><span class="dot-sep">●</span>
+      <span>3D DESIGN&nbsp;●&nbsp;MOTION&nbsp;●&nbsp;AI WORKFLOW&nbsp;●&nbsp;BRAND CAMPAIGN&nbsp;●&nbsp;</span>
+      <span>3D DESIGN&nbsp;●&nbsp;MOTION&nbsp;●&nbsp;AI WORKFLOW&nbsp;●&nbsp;BRAND CAMPAIGN&nbsp;●&nbsp;</span>
     </div>
   </div>
 
-  <!-- WORK -->
-  <section class="work" id="work">
-    <div class="work-head">
-      <p class="section-eyebrow reveal">SELECTED WORK</p>
-      <h2 class="work-title reveal">FEATURED<br>PROJECTS</h2>
-    </div>
+  <!-- ============ WORKS GRID ============ -->
+  <section class="works" id="work">
+    <span class="section-eyebrow">SELECTED WORK</span>
+    <h2 class="section-title">FEATURED<br>PROJECTS</h2>
 
-    <div class="grid">
-      <article class="card card-lg reveal" data-project="p1" data-hover>
-        <div class="card-media"><img src="images/project-01.png" alt="OliveYoung Black Friday" loading="lazy"></div>
-        <div class="card-info">
-          <span class="card-tag" style="--tag:#FFD400">01</span>
-          <h3>OLIVEYOUNG<br>BLACKFRIDAY</h3>
-          <p>[CJ] Olive Young · 2024</p>
+    <div class="works-grid">
+      <a class="work-tile" href="#">
+        <img class="work-thumb" src="https://kmheen.github.io/images/project-01.png" alt="OliveYoung Black Friday">
+        <div class="work-info">
+          <span class="work-num">01</span>
+          <span class="work-name">OLIVEYOUNG<br>BLACKFRIDAY</span>
+          <span class="work-tag">[CJ] Olive Young · 2024</span>
         </div>
-        <span class="card-view">VIEW CASE STUDY →</span>
-      </article>
+      </a>
 
-      <article class="card card-lg reveal" data-project="p2" data-hover>
-        <div class="card-media"><img src="images/project-02.png" alt="오쏘몰 3D 키비주얼" loading="lazy"></div>
-        <div class="card-info">
-          <span class="card-tag" style="--tag:#FF5FC4">02</span>
-          <h3>오쏘몰 3D<br>키비주얼</h3>
-          <p>[동아제약] · 2025</p>
+      <a class="work-tile" href="#">
+        <img class="work-thumb" src="https://kmheen.github.io/images/project-02.png" alt="오쏘몰 3D 키비주얼">
+        <div class="work-info">
+          <span class="work-num">02</span>
+          <span class="work-name">오쏘몰<br>3D 키비주얼</span>
+          <span class="work-tag">[동아제약] · 2025</span>
         </div>
-        <span class="card-view">VIEW CASE STUDY →</span>
-      </article>
+      </a>
 
-      <article class="card card-lg reveal" data-project="p3" data-hover>
-        <div class="card-media"><img src="images/project-03.png" alt="OHSEVEN 인터널 브랜딩" loading="lazy"></div>
-        <div class="card-info">
-          <span class="card-tag" style="--tag:#E4157B">03</span>
-          <h3>OHSEVEN<br>INTERNAL BRANDING</h3>
-          <p>[오세븐] · 2024</p>
+      <a class="work-tile" href="#">
+        <img class="work-thumb" src="https://kmheen.github.io/images/project-03.png" alt="OHSEVEN 인터널 브랜딩">
+        <div class="work-info">
+          <span class="work-num">03</span>
+          <span class="work-name">OHSEVEN<br>INTERNAL BRANDING</span>
+          <span class="work-tag">[오세븐] · 2024</span>
         </div>
-        <span class="card-view">VIEW CASE STUDY →</span>
-      </article>
+      </a>
 
-      <article class="card reveal" data-project="p7" data-hover>
-        <div class="card-media"><img src="images/project-07.png" alt="올리브 멤버스 3D 에셋" loading="lazy"></div>
-        <div class="card-info">
-          <span class="card-tag" style="--tag:#4CAF50">04</span>
-          <h3>OLIVE MEMBERS<br>3D VISUAL SYSTEM</h3>
-          <p>[CJ] 올리브영 · 2026</p>
+      <a class="work-tile" href="#">
+        <img class="work-thumb" src="https://kmheen.github.io/images/project-07.png" alt="올리브 멤버스 3D 에셋">
+        <div class="work-info">
+          <span class="work-num">04</span>
+          <span class="work-name">OLIVE MEMBERS<br>3D VISUAL SYSTEM</span>
+          <span class="work-tag">[CJ] 올리브영 · 2026</span>
         </div>
-        <span class="card-view">VIEW CASE STUDY →</span>
-      </article>
+      </a>
 
-      <article class="card reveal" data-project="p4" data-hover>
-        <div class="card-media"><img src="images/project-04.png" alt="Happy Prince 3D 에셋" loading="lazy"></div>
-        <div class="card-info">
-          <span class="card-tag" style="--tag:#FF9BC6">05</span>
-          <h3>HAPPY PRINCE<br>3D ASSET &amp; MOTION</h3>
-          <p>[해피프린스] · 2025</p>
+      <a class="work-tile" href="#">
+        <img class="work-thumb" src="https://kmheen.github.io/images/project-04.png" alt="Happy Prince 3D 에셋">
+        <div class="work-info">
+          <span class="work-num">05</span>
+          <span class="work-name">HAPPY PRINCE<br>3D ASSET &amp; MOTION</span>
+          <span class="work-tag">[해피프린스] · 2025</span>
         </div>
-        <span class="card-view">VIEW CASE STUDY →</span>
-      </article>
+      </a>
 
-      <article class="card reveal" data-project="p5" data-hover>
-        <div class="card-media"><img src="images/project-05.jpg" alt="AI Workflow" loading="lazy"></div>
-        <div class="card-info">
-          <span class="card-tag" style="--tag:#E31C3D">06</span>
-          <h3>AI WORKFLOW</h3>
-          <p>[삼립] · [동아제약] · [오세븐] · 2026</p>
+      <a class="work-tile" href="#">
+        <img class="work-thumb" src="https://kmheen.github.io/images/project-05.jpg" alt="AI Workflow">
+        <div class="work-info">
+          <span class="work-num">06</span>
+          <span class="work-name">AI WORKFLOW</span>
+          <span class="work-tag">[삼립]·[동아제약]·[오세븐] · 2026</span>
         </div>
-        <span class="card-view">VIEW CASE STUDY →</span>
-      </article>
+      </a>
 
-      <article class="card reveal" data-project="p6" data-hover>
-        <div class="card-media"><img src="images/project-06.png" alt="Vetple 캐릭터 디자인" loading="lazy"></div>
-        <div class="card-info">
-          <span class="card-tag" style="--tag:#8B7CF6">07</span>
-          <h3>VETPLE<br>CHARACTER DESIGN</h3>
-          <p>[동아제약] 벳플 · 2025</p>
+      <a class="work-tile" href="#">
+        <img class="work-thumb" src="https://kmheen.github.io/images/project-06.png" alt="Vetple 캐릭터 디자인">
+        <div class="work-info">
+          <span class="work-num">07</span>
+          <span class="work-name">VETPLE<br>CHARACTER DESIGN</span>
+          <span class="work-tag">[동아제약] 벳플 · 2025</span>
         </div>
-        <span class="card-view">VIEW CASE STUDY →</span>
-      </article>
+      </a>
 
-      <article class="card reveal" data-project="p8" data-hover>
-        <div class="card-media"><img src="images/project-08.png" alt="Skog 브랜드 3D 모션" loading="lazy"></div>
-        <div class="card-info">
-          <span class="card-tag" style="--tag:#6B4F3B">08</span>
-          <h3>SKOG<br>BRAND MOTION</h3>
-          <p>스코그 · 2024</p>
+      <a class="work-tile" href="#">
+        <img class="work-thumb" src="https://kmheen.github.io/images/project-08.png" alt="Skog 브랜드 3D 모션">
+        <div class="work-info">
+          <span class="work-num">08</span>
+          <span class="work-name">SKOG<br>BRAND MOTION</span>
+          <span class="work-tag">스코그 · 2024</span>
         </div>
-        <span class="card-view">VIEW CASE STUDY →</span>
-      </article>
+      </a>
 
-      <article class="card reveal" data-project="p9" data-hover>
-        <div class="card-media"><img src="images/project-09.png" alt="오흐뒤구떼 3D 모션" loading="lazy"></div>
-        <div class="card-info">
-          <span class="card-tag" style="--tag:#D4AF37">09</span>
-          <h3>HEURE DU GOÛTER<br>3D MOTION</h3>
-          <p>오흐뒤구떼 · 2024</p>
+      <a class="work-tile" href="#">
+        <img class="work-thumb" src="https://kmheen.github.io/images/project-09.png" alt="오흐뒤구떼 3D 모션">
+        <div class="work-info">
+          <span class="work-num">09</span>
+          <span class="work-name">HEURE DU GOÛTER<br>3D MOTION</span>
+          <span class="work-tag">오흐뒤구떼 · 2024</span>
         </div>
-        <span class="card-view">VIEW CASE STUDY →</span>
-      </article>
+      </a>
 
-      <article class="card reveal" data-project="p10" data-hover>
-        <div class="card-media"><img src="images/project-10.png" alt="에반윌리엄스 하이볼 3D 모션" loading="lazy"></div>
-        <div class="card-info">
-          <span class="card-tag" style="--tag:#C9A24B">10</span>
-          <h3>EVAN WILLIAMS HIGHBALL<br>3D MOTION</h3>
-          <p>[신세계L&amp;B] · 2024</p>
+      <a class="work-tile" href="#">
+        <img class="work-thumb" src="https://kmheen.github.io/images/project-10.png" alt="에반윌리엄스 하이볼 3D 모션">
+        <div class="work-info">
+          <span class="work-num">10</span>
+          <span class="work-name">EVAN WILLIAMS HIGHBALL<br>3D MOTION</span>
+          <span class="work-tag">[신세계L&amp;B] · 2024</span>
         </div>
-        <span class="card-view">VIEW CASE STUDY →</span>
-      </article>
+      </a>
     </div>
   </section>
 
-  <!-- ABOUT -->
+  <!-- ============ ABOUT ============ -->
   <section class="about" id="about">
-    <div class="about-photo reveal">
-      <img src="images/profile.png" alt="Kim Chaeyeon">
-    </div>
-    <div class="about-content">
-      <p class="section-eyebrow reveal">ABOUT</p>
-      <h2 class="about-lead reveal">
-        브랜드의 톤앤매너와 메시지를 이해하고, 사용자가 쉽고 매력적으로
-        받아들일 수 있는 시각 언어로 풀어내는 디자이너입니다.
-      </h2>
+    <div class="about-grid">
+      <img class="about-photo" src="https://kmheen.github.io/images/profile.png" alt="Kim Chaeyeon">
 
-      <div class="timeline reveal">
-        <div class="timeline-group">
-          <h3>EDUCATION</h3>
-          <div class="timeline-row">
-            <span class="t-date">2016.03 – 2021.02</span>
-            <span class="t-name">중앙대학교</span>
-            <span class="t-desc">시각디자인학과 졸업</span>
+      <div class="about-content">
+        <span class="section-eyebrow">ABOUT</span>
+        <h2 class="about-statement">
+          브랜드의 톤앤매너와 메시지를 이해하고,<br>
+          사용자가 쉽고 매력적으로 받아들일 수 있는<br>
+          시각 언어로 풀어내는 디자이너입니다.
+        </h2>
+
+        <div class="about-cols">
+          <div class="about-col">
+            <h3>EDUCATION</h3>
+            <p>2016.03 – 2021.02<br>중앙대학교 시각디자인학과 졸업</p>
+            <p>2022.06 – 2022.10<br>더모션아카데미 C4D / Octane 과정 수료</p>
           </div>
-          <div class="timeline-row">
-            <span class="t-date">2022.06 – 2022.10</span>
-            <span class="t-name">더모션아카데미</span>
-            <span class="t-desc">C4D / Octane 과정 수료</span>
+          <div class="about-col">
+            <h3>CAREER</h3>
+            <p>2023.05 – 현재<br>오세븐 OHSEVEN Brand Design Solution Company<br>3D / Motion / AI Senior Designer · Seoul</p>
           </div>
         </div>
-        <div class="timeline-group">
-          <h3>CAREER</h3>
-          <div class="timeline-row">
-            <span class="t-date">2023.05 – 현재</span>
-            <span class="t-name">오세븐 OHSEVEN</span>
-            <span class="t-desc">Brand Design Solution Company · 3D / Motion / AI Senior Designer · Seoul</span>
-          </div>
-        </div>
-      </div>
 
-      <div class="skills reveal">
-        <span>CINEMA 4D</span><span>OCTANE</span><span>AFTER EFFECTS</span>
-        <span>PHOTOSHOP</span><span>MIDJOURNEY</span><span>CHATGPT</span><span>SORA</span>
+        <div class="tools">
+          <span>CINEMA 4D</span><span>OCTANE</span><span>AFTER EFFECTS</span>
+          <span>PHOTOSHOP</span><span>MIDJOURNEY</span><span>CHATGPT</span><span>SORA</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <footer class="contact" id="contact">
-    <p class="section-eyebrow reveal">CONTACT</p>
-    <a href="mailto:00coco0@naver.com" class="contact-link reveal" data-hover>
-      LET'S WORK<br>TOGETHER →
-    </a>
-    <div class="contact-info reveal">
-      <a href="mailto:00coco0@naver.com" data-hover>00coco0@naver.com</a>
-      <span>+82 10 9899 7216</span>
-      <a href="https://instagram.com/kmheen3d" target="_blank" rel="noopener" data-hover>@kmheen3d</a>
+  <!-- ============ CONTACT / FOOTER ============ -->
+  <footer class="site-footer" id="contact">
+    <h2 class="footer-title">LET'S WORK<br>TOGETHER<span class="hero-accent">.</span></h2>
+    <a class="footer-mail" href="mailto:00coco0@naver.com">00COCO0@NAVER.COM</a>
+    <div class="footer-bottom">
+      <span>© 2026 KIM CHAEYEON. ALL RIGHTS RESERVED.</span>
+      <a href="https://instagram.com/kmheen3d" target="_blank">@KMHEEN3D</a>
     </div>
-    <p class="contact-foot">© 2026 KIM CHAEYEON. ALL RIGHTS RESERVED.</p>
   </footer>
 
-</main>
+  <script src="https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js"></script>
+  <script>
+    // ---- 도형 낙하 + 스태킹 인터랙션 ----
+    (function () {
+      const stageEl = document.querySelector('.labs-hero');
+      const wordmarkEl = document.getElementById('wordmark');
+      const shapeEls = Array.from(document.querySelectorAll('.labs-hero .shape'));
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-<!-- PROJECT DETAIL MODAL -->
-<div class="modal" id="modal">
-  <div class="modal-backdrop" id="modalBackdrop"></div>
-  <div class="modal-panel">
-    <button class="modal-close" id="modalClose" data-hover>CLOSE ✕</button>
+      if (!stageEl || !wordmarkEl || !shapeEls.length || !window.Matter || reduceMotion) return;
 
-    <div class="modal-track" id="modalTrack">
-      <!-- Image slides are injected here dynamically by script.js -->
+      const { Engine, World, Bodies, Body } = Matter;
+      const engine = Engine.create();
+      engine.gravity.y = 1;
+      const world = engine.world;
 
-      <!-- Slide: strategy & description -->
-      <section class="modal-slide slide-text">
-        <p class="slide-eyebrow">STRATEGY</p>
-        <h4 id="modalStrategyTitle"></h4>
-        <p id="modalDesc"></p>
-        <ul id="modalPoints"></ul>
-      </section>
-    </div>
+      let bodies = [];
+      let triggered = false;
+      let rafId = null;
 
-    <div class="modal-nav">
-      <div class="modal-dots" id="modalDots"></div>
-      <span class="modal-hint">SCROLL OR DRAG →</span>
-    </div>
-  </div>
-</div>
+      function buildBodies() {
+        const rect = stageEl.getBoundingClientRect();
+        const wRect = wordmarkEl.getBoundingClientRect();
+        const groundY = (wRect.top - rect.top) + wRect.height * 0.4; // PORTFOLIO 글자 뒤로 겹치는 위치
+        const width = rect.width;
 
-<script src="script.js"></script>
+        const ground = Bodies.rectangle(width / 2, groundY + 40, width * 2, 80, { isStatic: true });
+        const leftWall = Bodies.rectangle(-30, groundY / 2, 60, groundY * 2, { isStatic: true });
+        const rightWall = Bodies.rectangle(width + 30, groundY / 2, 60, groundY * 2, { isStatic: true });
+        World.add(world, [ground, leftWall, rightWall]);
+
+        bodies = shapeEls.map((el) => {
+          const r = el.getBoundingClientRect();
+          const cx = r.left - rect.left + r.width / 2;
+          const cy = r.top - rect.top + r.height / 2;
+          const type = el.dataset.shape;
+          const opts = { restitution: 0.35, friction: 0.55, frictionAir: 0.012 };
+
+          let body;
+          if (type === 'hex') {
+            body = Bodies.polygon(cx, cy, 6, r.width / 2, opts);
+          } else if (type === 'banner') {
+            body = Bodies.rectangle(cx, cy, r.width, r.height, Object.assign({}, opts, { chamfer: { radius: r.height / 2 } }));
+            Body.setAngle(body, ((el.classList.contains('shape-banner-b') ? 8 : -10) * Math.PI) / 180);
+          } else {
+            body = Bodies.circle(cx, cy, r.width / 2, opts);
+          }
+
+          body.__el = el;
+          body.__w = r.width;
+          body.__h = r.height;
+
+          el.style.left = '0px';
+          el.style.top = '0px';
+          el.style.transform = `translate(${cx - r.width / 2}px, ${cy - r.height / 2}px)`;
+
+          World.add(world, body);
+          return body;
+        });
+      }
+
+      function render() {
+        bodies.forEach((body) => {
+          const el = body.__el;
+          const x = body.position.x - body.__w / 2;
+          const y = body.position.y - body.__h / 2;
+          el.style.transform = `translate(${x}px, ${y}px) rotate(${body.angle}rad)`;
+        });
+      }
+
+      function loop() {
+        Engine.update(engine, 1000 / 60);
+        render();
+        rafId = requestAnimationFrame(loop);
+      }
+
+      function trigger() {
+        if (triggered) return;
+        triggered = true;
+        shapeEls.forEach((el) => { el.style.position = 'absolute'; });
+        buildBodies();
+        loop();
+        window.removeEventListener('scroll', onScroll);
+      }
+
+      function onScroll() {
+        if (window.scrollY > stageEl.offsetHeight * 0.15) trigger();
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+
+    // ---- 무드 로테이터 ----
+    const moods = ["3D DESIGN", "MOTION", "AI WORKFLOW", "BRAND CAMPAIGN"];
+    let i = 0;
+    const rotator = document.getElementById('moodRotator');
+    setInterval(() => {
+      i = (i + 1) % moods.length;
+      rotator.style.opacity = 0;
+      setTimeout(() => {
+        rotator.textContent = moods[i];
+        rotator.style.opacity = 1;
+      }, 250);
+    }, 1800);
+  </script>
 </body>
 </html>
