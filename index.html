@@ -280,7 +280,6 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js"></script>
   <script>
     // ---- PORTFOLIO 워드마크를 화면 가로폭에 꽉 차게 늘리기 (비율 유지, 폰트 왜곡 없이) ----
     function fitWordmark() {
@@ -301,134 +300,77 @@
       document.fonts.ready.then(fitWordmark);
     }
 
-    // ---- 도형 낙하 + 스태킹 + 역스크롤 복귀 인터랙션 ----
+    // ---- 도형 하강: 스크롤량에 정확히 비례해서 내려가고, 다시 올리면 그대로 따라 올라감 ----
     (function () {
       const stageEl = document.querySelector('.labs-hero');
       const wordmarkEl = document.getElementById('wordmark');
       const shapeEls = Array.from(document.querySelectorAll('.labs-hero .shape'));
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      if (!stageEl || !wordmarkEl || !shapeEls.length || !window.Matter || reduceMotion) return;
+      if (!stageEl || !wordmarkEl || !shapeEls.length || reduceMotion) return;
 
-      const { Engine, World, Bodies } = Matter;
-      const engine = Engine.create();
-      engine.gravity.y = 1;
-      const world = engine.world;
+      // 도형마다 최종적으로 안착할 때의 미세한 높이차/기울기 (자연스러운 더미 느낌)
+      const finalYOffset = [10, -15, 20, -10, 15, -20, 5];
+      const finalRotate = [-8, 6, -5, 10, -7, 9, -11];
+      // 도형마다 하강을 시작/종료하는 스크롤 구간을 살짝 어긋나게 줘서 순차적으로 떨어지는 느낌을 줌
+      const pStart = [0, 0.04, 0.08, 0.12, 0.16, 0.2, 0.24];
+      const pSpan = 0.6;
 
-      let bodies = [];
-      let triggered = false;
-      let rafId = null;
-      let initialLayout = [];
+      let base = [];
+      let groundY = 0;
+      let scrollDistance = 800;
+      let ticking = false;
 
-      // 낙하 전 원래 좌표를 저장해둠 (다시 위로 스크롤했을 때 돌아갈 자리)
-      // + left/top을 0으로 고정해 이후 transform 이 절대좌표 기준으로 동작하게 함
-      function captureInitialLayout() {
+      function easeInOut(t) { return t * t * (3 - 2 * t); }
+
+      // 현재 transform을 제거한 CSS 원래 위치를 기준으로 다시 측정
+      function measure() {
         const rect = stageEl.getBoundingClientRect();
-        initialLayout = shapeEls.map((el) => {
+        shapeEls.forEach((el) => { el.style.transform = 'none'; });
+        base = shapeEls.map((el) => {
           const r = el.getBoundingClientRect();
-          const x = r.left - rect.left;
-          const y = r.top - rect.top;
-          el.style.left = '0px';
-          el.style.top = '0px';
-          el.style.transform = `translate(${x}px, ${y}px)`;
-          return { x, y, w: r.width, h: r.height };
+          return { x: r.left - rect.left, y: r.top - rect.top, w: r.width, h: r.height };
         });
-      }
 
-      function buildBodies() {
-        const rect = stageEl.getBoundingClientRect();
         const wRect = wordmarkEl.getBoundingClientRect();
-        const groundY = (wRect.top - rect.top) + wRect.height * 0.88;
-        const width = rect.width;
+        groundY = (wRect.top - rect.top) + wRect.height * 0.85;
+        scrollDistance = Math.max(groundY, 400);
 
-        World.clear(world, false);
-
-        const ground = Bodies.rectangle(width / 2, groundY + 60, width * 2, 120, { isStatic: true });
-        const leftWall = Bodies.rectangle(-30, groundY / 2, 60, groundY * 2, { isStatic: true });
-        const rightWall = Bodies.rectangle(width + 30, groundY / 2, 60, groundY * 2, { isStatic: true });
-        World.add(world, [ground, leftWall, rightWall]);
-
-        bodies = shapeEls.map((el, i) => {
-          const layout = initialLayout[i];
-          const cx = layout.x + layout.w / 2;
-          const cy = layout.y + layout.h / 2;
-          const type = el.dataset.shape;
-          const opts = { restitution: 0.4, friction: 0.5, frictionAir: 0.012 };
-
-          let body;
-          if (type === 'square') {
-            body = Bodies.rectangle(cx, cy, layout.w, layout.h, Object.assign({}, opts, { chamfer: { radius: layout.w * 0.18 } }));
-          } else if (type === 'triangle') {
-            body = Bodies.polygon(cx, cy, 3, layout.w / 2, opts);
-          } else {
-            body = Bodies.circle(cx, cy, layout.w / 2, opts);
-          }
-
-          body.__el = el;
-          body.__w = layout.w;
-          body.__h = layout.h;
-
-          el.style.transition = '';
-          el.style.transform = `translate(${cx - layout.w / 2}px, ${cy - layout.h / 2}px)`;
-
-          World.add(world, body);
-          return body;
-        });
+        render();
       }
 
       function render() {
-        bodies.forEach((body) => {
-          const el = body.__el;
-          const x = body.position.x - body.__w / 2;
-          const y = body.position.y - body.__h / 2;
-          el.style.transform = `translate(${x}px, ${y}px) rotate(${body.angle}rad)`;
-        });
-      }
+        const globalProgress = Math.min(Math.max(window.scrollY / scrollDistance, 0), 1);
 
-      function loop() {
-        Engine.update(engine, 1000 / 60);
-        render();
-        rafId = requestAnimationFrame(loop);
-      }
-
-      function startLoop() { if (rafId === null) loop(); }
-      function stopLoop() { if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } }
-
-      function fall() {
-        if (triggered) return;
-        triggered = true;
-        buildBodies();
-        startLoop();
-      }
-
-      // 다시 위로 스크롤하면 도형이 원래 자리로 딸려 올라감
-      function riseBack() {
-        if (!triggered) return;
-        triggered = false;
-        stopLoop();
-        World.clear(world, false);
-        bodies = [];
         shapeEls.forEach((el, i) => {
-          const layout = initialLayout[i];
-          el.style.transition = 'transform 0.7s cubic-bezier(.22,.68,0,1.01)';
-          el.style.transform = `translate(${layout.x}px, ${layout.y}px) rotate(0deg)`;
+          const b = base[i];
+          const start = pStart[i] || 0;
+          const end = Math.min(start + pSpan, 1);
+          const local = Math.min(Math.max((globalProgress - start) / (end - start), 0), 1);
+          const eased = easeInOut(local);
+
+          const initialCenterY = b.y + b.h / 2;
+          const finalCenterY = groundY - b.h * 0.5 + finalYOffset[i];
+          const currentCenterY = initialCenterY + (finalCenterY - initialCenterY) * eased;
+          const rot = finalRotate[i] * eased;
+
+          el.style.transform = `translate(${b.x}px, ${currentCenterY - b.h / 2}px) rotate(${rot}deg)`;
         });
+
+        ticking = false;
       }
 
       function onScroll() {
-        const downThreshold = stageEl.offsetHeight * 0.15;
-        const upThreshold = stageEl.offsetHeight * 0.04;
-        if (!triggered && window.scrollY > downThreshold) {
-          fall();
-        } else if (triggered && window.scrollY <= upThreshold) {
-          riseBack();
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(render);
         }
       }
 
       function init() {
-        captureInitialLayout();
+        measure();
         window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', () => { if (!triggered) captureInitialLayout(); });
+        window.addEventListener('resize', measure);
       }
 
       if (document.fonts && document.fonts.ready) {
