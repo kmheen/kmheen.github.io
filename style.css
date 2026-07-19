@@ -526,7 +526,6 @@ body.has-custom-cursor .card {
   flex-direction: column;
   justify-content: space-between;
   padding: 26px 28px;
-  background: linear-gradient(to right, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.92) 38%, rgba(255,255,255,0) 62%);
   pointer-events: none;
 }
 
@@ -587,9 +586,6 @@ body.has-custom-cursor .card {
 }
 
 @media (max-width: 700px) {
-  .modal-cover-overlay {
-    background: linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.95) 45%, rgba(255,255,255,0) 75%);
-  }
   .modal-cover-top { max-width: none; }
 }
 
