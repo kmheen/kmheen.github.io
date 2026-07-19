@@ -99,12 +99,17 @@
         <span class="card-view">VIEW CASE STUDY →</span>
       </article>
 
-      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-03.png">
-        <div class="card-media"><img class="work-thumb" src="https://kmheen.github.io/images/project-03.png" alt="OHSEVEN 인터널 브랜딩" loading="lazy"></div>
+      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-03.png"
+        data-role="3D그래픽 에셋 제작"
+        data-tools="Cinema4D / Octane / Adobe Photoshop"
+        data-contribution="100"
+        data-duration="2주"
+        data-tags="3D 에셋 / 인터널 브랜딩">
+        <div class="card-media"><img class="work-thumb" src="https://kmheen.github.io/images/project-03.png" alt="인터널 브랜딩 3D 아이콘" loading="lazy"></div>
         <div class="card-info">
           <span class="card-tag work-num" style="--tag:#E4157B">03</span>
-          <h3 class="work-name">OHSEVEN<br>INTERNAL BRANDING</h3>
-          <p class="work-tag">[오세븐] · 2024</p>
+          <h3 class="work-name">인터널 브랜딩<br>3D 아이콘</h3>
+          <p class="work-tag">[오세븐] 인터널브랜딩 / 2024</p>
         </div>
         <span class="card-view">VIEW CASE STUDY →</span>
       </article>
@@ -178,20 +183,9 @@
     <div class="project-modal-panel">
       <button type="button" class="project-modal-close" data-modal-close aria-label="닫기">✕</button>
 
-      <div class="project-modal-head">
-        <div class="project-modal-head-info">
-          <span class="project-modal-num" id="modalNum"></span>
-          <h2 class="project-modal-title" id="modalTitle"></h2>
-          <span class="project-modal-tag" id="modalTag"></span>
-        </div>
-        <div class="project-modal-head-strategy">
-          <span class="modal-eyebrow">STRATEGY</span>
-          <p class="modal-strategy-text" id="modalDesc"></p>
-        </div>
-      </div>
-
       <div class="project-modal-track" id="modalTrack">
-        <!-- 이미지 슬라이드는 JS가 프로젝트별 이미지 목록(data-images)을 읽어 여기에 자동으로 채웁니다 -->
+        <!-- 슬라이드는 JS가 프로젝트별 이미지 목록(data-images)을 읽어 여기에 자동으로 채웁니다.
+             첫 슬라이드에는 이미지 위로 제목/역할/사용툴/기여도 등 정보가 오버레이됩니다. -->
       </div>
 
       <div class="project-modal-nav">
@@ -269,10 +263,6 @@
       const modal = document.getElementById('projectModal');
       const track = document.getElementById('modalTrack');
       const dotsWrap = document.getElementById('modalDots');
-      const modalNum = document.getElementById('modalNum');
-      const modalTitle = document.getElementById('modalTitle');
-      const modalTag = document.getElementById('modalTag');
-      const modalDesc = document.getElementById('modalDesc');
       if (!modal || !track) return;
 
       let dots = [];
@@ -373,6 +363,44 @@
         }
       }
 
+      // 첫 슬라이드(표지 이미지) 위에 제목/역할/사용툴/기여도/제작기간/태그를 오버레이로 표시
+      // → 역할·사용툴·기여도·제작기간·태그는 카드에 data-role, data-tools, data-contribution,
+      //   data-duration, data-tags 속성이 있을 때만 해당 줄이 나타남 (없으면 자동으로 생략)
+      function buildCoverOverlay(tile) {
+        const firstSlide = track.firstElementChild;
+        if (!firstSlide) return;
+
+        const num = tile.querySelector('.work-num');
+        const name = tile.querySelector('.work-name');
+        const tag = tile.querySelector('.work-tag');
+        const d = tile.dataset;
+
+        const metaRows = [
+          ['역할', d.role],
+          ['사용툴', d.tools],
+          ['기여도', d.contribution],
+          ['제작기간', d.duration],
+        ].filter(([, value]) => value);
+
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-cover-overlay';
+        overlay.innerHTML = `
+          <div class="modal-cover-top">
+            <span class="project-modal-num">${num ? num.textContent : ''}</span>
+            <h2 class="project-modal-title">${name ? name.innerHTML : ''}</h2>
+            <span class="project-modal-tag">${tag ? tag.textContent : ''}</span>
+          </div>
+          ${metaRows.length ? `
+          <div class="modal-cover-meta">
+            ${metaRows.map(([label, value]) => `
+              <div class="modal-meta-row"><span class="modal-meta-label">${label}</span><span class="modal-meta-value">${value}</span></div>
+            `).join('')}
+          </div>` : ''}
+          ${d.tags ? `<span class="modal-cover-tags">${d.tags}</span>` : ''}
+        `;
+        firstSlide.appendChild(overlay);
+      }
+
       // 현재 보고 있는 슬라이드의 영상만 재생하고 나머지는 정지
       function syncVideoPlayback() {
         const index = currentSlideIndex();
@@ -388,18 +416,10 @@
       }
 
       function openModal(tile) {
-        const num = tile.querySelector('.work-num');
-        const name = tile.querySelector('.work-name');
-        const tag = tile.querySelector('.work-tag');
         const imgEl = tile.querySelector('.work-thumb');
-        const tagText = tag ? tag.textContent : '';
-
-        modalNum.textContent = num ? num.textContent : '';
-        modalTitle.innerHTML = name ? name.innerHTML : '';
-        modalTag.textContent = tagText;
-        modalDesc.textContent = `${tagText} 프로젝트에서 브랜드의 톤앤매너와 메시지를 분석하고, 3D와 모션으로 시각 언어를 만들었습니다.`;
 
         buildSlides(tile.dataset.images, imgEl ? imgEl.alt : '');
+        buildCoverOverlay(tile);
         rebuildDots();
 
         modal.classList.add('is-open');
