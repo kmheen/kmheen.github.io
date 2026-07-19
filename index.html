@@ -89,7 +89,7 @@
         <span class="card-view">VIEW CASE STUDY →</span>
       </article>
 
-      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-02.png">
+      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-02.png,https://kmheen.github.io/images/project-02-1.png,https://kmheen.github.io/images/project-02-2.png,https://kmheen.github.io/images/project-02-3.png,https://kmheen.github.io/images/project-02-4.png,https://kmheen.github.io/images/project-02-5.png,https://kmheen.github.io/images/project-02-6.png">
         <div class="card-media"><img class="work-thumb" src="https://kmheen.github.io/images/project-02.png" alt="오쏘몰 3D 키비주얼" loading="lazy"></div>
         <div class="card-info">
           <span class="card-tag work-num" style="--tag:#FF5FC4">02</span>
@@ -301,6 +301,7 @@
       function updateActiveDot() {
         const index = currentSlideIndex();
         dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+        syncVideoPlayback();
       }
 
       function rebuildDots() {
@@ -317,21 +318,52 @@
         }
       }
 
-      // 프로젝트 카드의 data-images(콤마로 구분된 이미지 URL 목록)를 읽어 이미지 슬라이드를 생성
-      // → 이미지를 더 추가하고 싶으면 각 카드의 data-images="url1,url2,url3" 값에 URL만 더 넣으면 됨
+      // 프로젝트 카드의 data-images(콤마로 구분된 URL 목록)를 읽어 슬라이드를 생성
+      // → mp4/webm/mov 확장자는 자동으로 영상 슬라이드(음소거·자동재생·루프)로 만들어짐
+      // → 더 추가하고 싶으면 각 카드의 data-images="url1,url2,video.mp4" 값에 URL만 더 넣으면 됨
+      const VIDEO_EXT = /\.(mp4|webm|mov)(\?.*)?$/i;
+
       function buildSlides(imagesAttr, alt) {
         track.innerHTML = '';
         const urls = (imagesAttr || '').split(',').map((s) => s.trim()).filter(Boolean);
 
         urls.forEach((url) => {
           const section = document.createElement('section');
+          const isVideo = VIDEO_EXT.test(url);
           section.className = 'modal-page modal-page-image';
-          const img = document.createElement('img');
-          img.src = url;
-          img.alt = alt || '';
-          img.loading = 'lazy';
-          section.appendChild(img);
+
+          if (isVideo) {
+            const video = document.createElement('video');
+            video.src = url;
+            video.muted = true;
+            video.loop = true;
+            video.playsInline = true;
+            video.setAttribute('playsinline', '');
+            video.preload = 'metadata';
+            section.appendChild(video);
+          } else {
+            const img = document.createElement('img');
+            img.src = url;
+            img.alt = alt || '';
+            img.loading = 'lazy';
+            section.appendChild(img);
+          }
+
           track.appendChild(section);
+        });
+      }
+
+      // 현재 보고 있는 슬라이드의 영상만 재생하고 나머지는 정지
+      function syncVideoPlayback() {
+        const index = currentSlideIndex();
+        Array.from(track.children).forEach((slide, i) => {
+          const video = slide.querySelector('video');
+          if (!video) return;
+          if (i === index) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
         });
       }
 
@@ -361,6 +393,7 @@
         modal.classList.remove('is-open');
         modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
+        track.querySelectorAll('video').forEach((v) => v.pause());
       }
 
       document.querySelectorAll('.works-grid .card').forEach((tile) => {
