@@ -318,39 +318,69 @@
         }
       }
 
-      // 프로젝트 카드의 data-images(콤마로 구분된 URL 목록)를 읽어 슬라이드를 생성
-      // → mp4/webm/mov 확장자는 자동으로 영상 슬라이드(음소거·자동재생·루프)로 만들어짐
-      // → 더 추가하고 싶으면 각 카드의 data-images="url1,url2,video.mp4" 값에 URL만 더 넣으면 됨
+      // 프로젝트 카드의 data-images를 읽어 슬라이드를 생성:
+      // - data-images에 이미지가 여러 개(콤마로 나열) 있으면 그 목록을 그대로 사용
+      // - 표지 1장만 있으면, 같은 파일명 뒤에 -1 ~ -9를 붙인 파일이 있는지 자동으로 찾아서
+      //   최대 10장(표지 포함)까지 자동으로 채움 → 실제로 존재하는 파일만 화면에 남고,
+      //   없는 파일은 조용히 숨겨지므로 그냥 images/ 폴더에 project-XX-1.png, project-XX-2.png ...
+      //   식으로 파일만 올려두면 코드 수정 없이 자동으로 갤러리에 추가됨
+      // - mp4/webm/mov 확장자는 자동으로 영상 슬라이드(음소거·자동재생·루프)로 만들어짐
       const VIDEO_EXT = /\.(mp4|webm|mov)(\?.*)?$/i;
+      const MAX_AUTO_SLOTS = 10;
+
+      function makeMediaEl(url, alt) {
+        if (VIDEO_EXT.test(url)) {
+          const video = document.createElement('video');
+          video.src = url;
+          video.muted = true;
+          video.loop = true;
+          video.playsInline = true;
+          video.setAttribute('playsinline', '');
+          video.preload = 'metadata';
+          return video;
+        }
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = alt || '';
+        img.loading = 'lazy';
+        return img;
+      }
+
+      function addSlide(url, alt) {
+        const section = document.createElement('section');
+        section.className = 'modal-page modal-page-image';
+        const media = makeMediaEl(url, alt);
+        section.appendChild(media);
+        track.appendChild(section);
+        return { section, media };
+      }
 
       function buildSlides(imagesAttr, alt) {
         track.innerHTML = '';
         const urls = (imagesAttr || '').split(',').map((s) => s.trim()).filter(Boolean);
+        if (!urls.length) return;
 
-        urls.forEach((url) => {
-          const section = document.createElement('section');
-          const isVideo = VIDEO_EXT.test(url);
-          section.className = 'modal-page modal-page-image';
+        if (urls.length > 1) {
+          // 이미 여러 장을 직접 지정해둔 경우: 그대로 사용
+          urls.forEach((url) => addSlide(url, alt));
+          return;
+        }
 
-          if (isVideo) {
-            const video = document.createElement('video');
-            video.src = url;
-            video.muted = true;
-            video.loop = true;
-            video.playsInline = true;
-            video.setAttribute('playsinline', '');
-            video.preload = 'metadata';
-            section.appendChild(video);
-          } else {
-            const img = document.createElement('img');
-            img.src = url;
-            img.alt = alt || '';
-            img.loading = 'lazy';
-            section.appendChild(img);
-          }
+        // 표지 1장만 있는 경우: 같은 이름 규칙으로 최대 10장까지 자동 탐색
+        const match = urls[0].match(/^(.*)(\.[a-zA-Z0-9]+)$/);
+        addSlide(urls[0], alt);
+        if (!match) return;
 
-          track.appendChild(section);
-        });
+        const [, base, ext] = match;
+        for (let i = 1; i < MAX_AUTO_SLOTS; i++) {
+          const candidateUrl = `${base}-${i}${ext}`;
+          const { section, media } = addSlide(candidateUrl, alt);
+          // 실제로 존재하지 않는 파일이면 조용히 슬라이드를 제거하고 도트를 다시 맞춤
+          media.addEventListener('error', () => {
+            section.remove();
+            rebuildDots();
+          }, { once: true });
+        }
       }
 
       // 현재 보고 있는 슬라이드의 영상만 재생하고 나머지는 정지
