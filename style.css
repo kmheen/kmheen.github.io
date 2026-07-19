@@ -8,8 +8,8 @@
   --accent: #3b5bff;   /* C4D/Octane 렌더 하이라이트를 연상시키는 코발트 블루 */
   --muted: #8a8a86;
 
-  --font-display: "Inter", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-  --font-body: "Inter", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-display: "Wanted Sans Variable", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-body: "Wanted Sans Variable", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 
   --gap: clamp(20px, 3vw, 40px);
 }
