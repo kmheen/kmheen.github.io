@@ -318,14 +318,12 @@
         }
       }
 
-      // 프로젝트 카드의 data-images를 읽어 슬라이드를 생성:
-      // - data-images에 이미지가 여러 개(콤마로 나열) 있으면 그 목록을 그대로 사용
-      // - 표지 1장만 있으면, 같은 파일명 뒤에 -1 ~ -9를 붙인 파일이 있는지 자동으로 찾아서
-      //   최대 10장(표지 포함)까지 자동으로 채움 → 실제로 존재하는 파일만 화면에 남고,
-      //   없는 파일은 조용히 숨겨지므로 그냥 images/ 폴더에 project-XX-1.png, project-XX-2.png ...
-      //   식으로 파일만 올려두면 코드 수정 없이 자동으로 갤러리에 추가됨
+      // 프로젝트 카드의 이미지 파일명 규칙 (아래 세 가지 전부 파일만 올리면 코드 수정 없이 자동 반영):
+      // - 그리드 썸네일: project-XX.png (기존 그대로, work-thumb의 src)
+      // - 팝업 첫 화면 세로형 표지(선택): project-XX-cover.png → 있으면 이걸 쓰고, 없으면 썸네일로 자동 대체
+      // - 팝업 갤러리(가로형, 2번째 장부터): data-images에 여러 장을 직접 나열하거나,
+      //   data-images가 썸네일 1장뿐이면 project-XX-1.png ~ project-XX-9.png를 자동 탐색(최대 9장 추가)
       // - mp4/webm/mov 확장자는 자동으로 영상 슬라이드(음소거·자동재생·루프)로 만들어짐
-      // - data-images의 첫 번째 이미지는 그리드 썸네일과 달라도 됨 → 팝업 첫 화면 전용(세로형) 이미지를 따로 지정 가능
       const VIDEO_EXT = /\.(mp4|webm|mov)(\?.*)?$/i;
       const MAX_AUTO_SLOTS = 10;
 
@@ -360,7 +358,8 @@
       // 1번째 슬라이드: 좌측 텍스트(제목/역할/사용툴/기여도/제작기간/태그) + 우측 세로형 이미지
       // → 역할·사용툴·기여도·제작기간·태그는 카드에 data-role, data-tools, data-contribution,
       //   data-duration, data-tags 속성이 있을 때만 해당 줄이 나타남 (없으면 자동으로 생략)
-      function addCoverSlide(url, alt, tile) {
+      // → coverUrl(project-XX-cover.*)이 없으면 fallbackUrl(그리드 썸네일)로 자동 대체됨
+      function addCoverSlide(coverUrl, fallbackUrl, alt, tile) {
         const num = tile.querySelector('.work-num');
         const name = tile.querySelector('.work-name');
         const tag = tile.querySelector('.work-tag');
@@ -393,28 +392,34 @@
           <div class="modal-cover-media"></div>
         `;
         const mediaWrap = section.querySelector('.modal-cover-media');
-        const media = makeMediaEl(url, alt);
+        const media = makeMediaEl(coverUrl, alt);
+        // 세로형 표지 파일이 없으면 썸네일로 조용히 대체
+        if (!VIDEO_EXT.test(coverUrl)) {
+          media.addEventListener('error', () => { media.src = fallbackUrl; }, { once: true });
+        }
         mediaWrap.appendChild(media);
         track.appendChild(section);
-        return { section, media };
       }
 
-      function buildSlides(imagesAttr, alt, tile) {
+      function buildSlides(imagesAttr, thumbSrc, alt, tile) {
         track.innerHTML = '';
+
+        // 표지: 썸네일 파일명 기준으로 "-cover"가 붙은 파일이 있는지 시도, 없으면 썸네일 그대로 사용
+        const thumbMatch = (thumbSrc || '').match(/^(.*)(\.[a-zA-Z0-9]+)$/);
+        const coverUrl = thumbMatch ? `${thumbMatch[1]}-cover${thumbMatch[2]}` : thumbSrc;
+        addCoverSlide(coverUrl, thumbSrc, alt, tile);
+
+        // 갤러리(2번째 장부터)
         const urls = (imagesAttr || '').split(',').map((s) => s.trim()).filter(Boolean);
         if (!urls.length) return;
 
-        const isAuto = urls.length === 1;
-
-        addCoverSlide(urls[0], alt, tile);
-
-        if (!isAuto) {
-          // 직접 지정된 목록: 2번째부터 그대로 가로형 슬라이드로
-          urls.slice(1).forEach((url) => addPlainSlide(url, alt));
+        if (urls.length > 1) {
+          // 직접 여러 장을 지정해둔 경우: 그대로 사용
+          urls.forEach((url) => addPlainSlide(url, alt));
           return;
         }
 
-        // 표지 1장만 있는 경우: 같은 이름 규칙으로 최대 10장까지 자동 탐색 (2번째 슬라이드부터)
+        // 갤러리 이미지가 1장(=썸네일)뿐이면 같은 이름 규칙으로 최대 9장까지 자동 탐색
         const match = urls[0].match(/^(.*)(\.[a-zA-Z0-9]+)$/);
         if (!match) return;
 
@@ -447,7 +452,7 @@
       function openModal(tile) {
         const imgEl = tile.querySelector('.work-thumb');
 
-        buildSlides(tile.dataset.images, imgEl ? imgEl.alt : '', tile);
+        buildSlides(tile.dataset.images, imgEl ? imgEl.src : '', imgEl ? imgEl.alt : '', tile);
         rebuildDots();
 
         modal.classList.add('is-open');
