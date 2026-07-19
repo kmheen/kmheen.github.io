@@ -8,8 +8,8 @@
   --accent: #3b5bff;   /* C4D/Octane 렌더 하이라이트를 연상시키는 코발트 블루 */
   --muted: #8a8a86;
 
-  --font-display: "Bebas Neue", sans-serif;
-  --font-body: "Space Grotesk", sans-serif;
+  --font-display: "Inter", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-body: "Inter", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 
   --gap: clamp(20px, 3vw, 40px);
 }
@@ -21,6 +21,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -43,6 +44,7 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   flex-direction: column;
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: 22px;
   line-height: 0.95;
   letter-spacing: 0.5px;
@@ -53,7 +55,7 @@ a { color: inherit; text-decoration: none; }
   flex-direction: column;
   gap: 2px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.06em;
 }
 .main-nav a { transition: color 0.2s; }
@@ -63,7 +65,7 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   gap: 40px;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.04em;
   text-align: right;
 }
@@ -81,7 +83,7 @@ a { color: inherit; text-decoration: none; }
   margin-right: 6px;
 }
 
-.inquiry-link { color: var(--ink); font-weight: 700; }
+.inquiry-link { color: var(--ink); font-weight: 400; }
 .inquiry-link:hover { color: var(--accent); }
 
 /* =========================================================
@@ -110,7 +112,7 @@ a { color: inherit; text-decoration: none; }
 .hero-eyebrow {
   display: block;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.16em;
   color: var(--accent);
   margin-bottom: 16px;
@@ -120,6 +122,7 @@ a { color: inherit; text-decoration: none; }
 
 .line-strong {
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(28px, 4.6vw, 52px);
   line-height: 0.98;
   letter-spacing: 0.4px;
@@ -127,7 +130,7 @@ a { color: inherit; text-decoration: none; }
 
 .line-soft {
   font-family: var(--font-body);
-  font-weight: 500;
+  font-weight: 400;
   font-size: clamp(13px, 1.6vw, 18px);
   letter-spacing: 0.05em;
   color: var(--muted);
@@ -139,7 +142,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 13.5px;
   line-height: 1.7;
   color: var(--muted);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .scroll-cue {
@@ -148,7 +151,7 @@ a { color: inherit; text-decoration: none; }
   align-items: flex-end;
   gap: 8px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.12em;
   color: var(--muted);
   white-space: nowrap;
@@ -170,7 +173,7 @@ a { color: inherit; text-decoration: none; }
   overflow: visible;
   white-space: nowrap;
   text-align: left;
-  font-family: "Josefin Sans", var(--font-display);
+  font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(60px, 13vw, 180px);
   line-height: 1;
@@ -218,7 +221,7 @@ a { color: inherit; text-decoration: none; }
 .section-eyebrow {
   display: block;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.16em;
   color: var(--accent);
   margin-bottom: 12px;
@@ -226,6 +229,7 @@ a { color: inherit; text-decoration: none; }
 
 .section-title {
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(40px, 7vw, 84px);
   line-height: 0.95;
   margin-bottom: 48px;
@@ -279,7 +283,7 @@ a { color: inherit; text-decoration: none; }
   gap: 8px;
   font-family: var(--font-display);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.1em;
   color: var(--muted);
 }
@@ -293,6 +297,7 @@ a { color: inherit; text-decoration: none; }
 
 .card-info h3 {
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: 20px;
   line-height: 1.15;
   letter-spacing: 0.3px;
@@ -301,7 +306,7 @@ a { color: inherit; text-decoration: none; }
 .card-info p {
   font-size: 12.5px;
   color: var(--muted);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .card-view {
@@ -310,7 +315,7 @@ a { color: inherit; text-decoration: none; }
   background: var(--ink);
   color: #fff;
   font-size: 10.5px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.05em;
   padding: 8px 14px;
   border-radius: 100px;
@@ -344,7 +349,7 @@ a { color: inherit; text-decoration: none; }
 .about-statement {
   font-family: var(--font-body);
   font-size: clamp(20px, 2.6vw, 30px);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.5;
   margin: 12px 0 44px;
 }
@@ -358,7 +363,7 @@ a { color: inherit; text-decoration: none; }
 
 .about-col h3 {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.12em;
   color: var(--accent);
   margin-bottom: 12px;
@@ -379,7 +384,7 @@ a { color: inherit; text-decoration: none; }
 
 .tools span {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.04em;
   border: 1px solid var(--line);
   padding: 6px 12px;
@@ -476,6 +481,7 @@ a { color: inherit; text-decoration: none; }
 
 .project-modal-title {
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(20px, 2.6vw, 30px);
   line-height: 1.08;
   margin-bottom: 6px;
@@ -483,7 +489,7 @@ a { color: inherit; text-decoration: none; }
 
 .project-modal-tag {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.06em;
   color: var(--muted);
 }
@@ -549,7 +555,7 @@ a { color: inherit; text-decoration: none; }
 
 .modal-hint {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.12em;
   color: var(--muted);
 }
@@ -557,7 +563,7 @@ a { color: inherit; text-decoration: none; }
 .modal-eyebrow {
   display: block;
   font-size: 10.5px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.16em;
   color: var(--accent);
   margin-bottom: 14px;
@@ -566,7 +572,7 @@ a { color: inherit; text-decoration: none; }
 .modal-strategy-text {
   font-size: clamp(15px, 1.6vw, 19px);
   line-height: 1.6;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 @media (max-width: 700px) {
@@ -587,6 +593,7 @@ a { color: inherit; text-decoration: none; }
 
 .footer-title {
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(40px, 8vw, 90px);
   line-height: 0.95;
 }
@@ -595,7 +602,7 @@ a { color: inherit; text-decoration: none; }
   display: inline-block;
   margin-top: 24px;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.04em;
   border-bottom: 2px solid var(--ink);
   transition: color 0.2s, border-color 0.2s;
@@ -607,7 +614,7 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   justify-content: space-between;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.08em;
   color: var(--muted);
 }
