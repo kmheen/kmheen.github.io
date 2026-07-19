@@ -526,7 +526,7 @@ body.has-custom-cursor .card {
 .project-modal-track {
   flex: 0 0 auto;
   width: 100%;
-  aspect-ratio: 8 / 5;
+  aspect-ratio: 1440 / 1024;
   max-height: calc(90vh - 130px);
   display: flex;
   overflow-x: auto;
