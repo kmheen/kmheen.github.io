@@ -325,6 +325,7 @@
       //   없는 파일은 조용히 숨겨지므로 그냥 images/ 폴더에 project-XX-1.png, project-XX-2.png ...
       //   식으로 파일만 올려두면 코드 수정 없이 자동으로 갤러리에 추가됨
       // - mp4/webm/mov 확장자는 자동으로 영상 슬라이드(음소거·자동재생·루프)로 만들어짐
+      // - data-images의 첫 번째 이미지는 그리드 썸네일과 달라도 됨 → 팝업 첫 화면 전용(세로형) 이미지를 따로 지정 가능
       const VIDEO_EXT = /\.(mp4|webm|mov)(\?.*)?$/i;
       const MAX_AUTO_SLOTS = 10;
 
@@ -346,7 +347,8 @@
         return img;
       }
 
-      function addSlide(url, alt) {
+      // 2번째 슬라이드부터: 기존처럼 가로형으로 꽉 채운 일반 이미지 슬라이드
+      function addPlainSlide(url, alt) {
         const section = document.createElement('section');
         section.className = 'modal-page modal-page-image';
         const media = makeMediaEl(url, alt);
@@ -355,41 +357,10 @@
         return { section, media };
       }
 
-      function buildSlides(imagesAttr, alt) {
-        track.innerHTML = '';
-        const urls = (imagesAttr || '').split(',').map((s) => s.trim()).filter(Boolean);
-        if (!urls.length) return;
-
-        if (urls.length > 1) {
-          // 이미 여러 장을 직접 지정해둔 경우: 그대로 사용
-          urls.forEach((url) => addSlide(url, alt));
-          return;
-        }
-
-        // 표지 1장만 있는 경우: 같은 이름 규칙으로 최대 10장까지 자동 탐색
-        const match = urls[0].match(/^(.*)(\.[a-zA-Z0-9]+)$/);
-        addSlide(urls[0], alt);
-        if (!match) return;
-
-        const [, base, ext] = match;
-        for (let i = 1; i < MAX_AUTO_SLOTS; i++) {
-          const candidateUrl = `${base}-${i}${ext}`;
-          const { section, media } = addSlide(candidateUrl, alt);
-          // 실제로 존재하지 않는 파일이면 조용히 슬라이드를 제거하고 도트를 다시 맞춤
-          media.addEventListener('error', () => {
-            section.remove();
-            rebuildDots();
-          }, { once: true });
-        }
-      }
-
-      // 첫 슬라이드(표지 이미지) 위에 제목/역할/사용툴/기여도/제작기간/태그를 오버레이로 표시
+      // 1번째 슬라이드: 좌측 텍스트(제목/역할/사용툴/기여도/제작기간/태그) + 우측 세로형 이미지
       // → 역할·사용툴·기여도·제작기간·태그는 카드에 data-role, data-tools, data-contribution,
       //   data-duration, data-tags 속성이 있을 때만 해당 줄이 나타남 (없으면 자동으로 생략)
-      function buildCoverOverlay(tile) {
-        const firstSlide = track.firstElementChild;
-        if (!firstSlide) return;
-
+      function addCoverSlide(url, alt, tile) {
         const num = tile.querySelector('.work-num');
         const name = tile.querySelector('.work-name');
         const tag = tile.querySelector('.work-tag');
@@ -402,23 +373,61 @@
           ['제작기간', d.duration],
         ].filter(([, value]) => value);
 
-        const overlay = document.createElement('div');
-        overlay.className = 'modal-cover-overlay';
-        overlay.innerHTML = `
-          <div class="modal-cover-top">
-            <span class="project-modal-num">${num ? num.textContent : ''}</span>
-            <h2 class="project-modal-title">${name ? name.innerHTML : ''}</h2>
-            <span class="project-modal-tag">${tag ? tag.textContent : ''}</span>
+        const section = document.createElement('section');
+        section.className = 'modal-page modal-page-cover';
+        section.innerHTML = `
+          <div class="modal-cover-text">
+            <div class="modal-cover-top">
+              <span class="project-modal-num">${num ? num.textContent : ''}</span>
+              <h2 class="project-modal-title">${name ? name.innerHTML : ''}</h2>
+              <span class="project-modal-tag">${tag ? tag.textContent : ''}</span>
+            </div>
+            ${metaRows.length ? `
+            <div class="modal-cover-meta">
+              ${metaRows.map(([label, value]) => `
+                <div class="modal-meta-row"><span class="modal-meta-label">${label}</span><span class="modal-meta-value">${value}</span></div>
+              `).join('')}
+            </div>` : '<div></div>'}
+            ${d.tags ? `<span class="modal-cover-tags">${d.tags}</span>` : '<span></span>'}
           </div>
-          ${metaRows.length ? `
-          <div class="modal-cover-meta">
-            ${metaRows.map(([label, value]) => `
-              <div class="modal-meta-row"><span class="modal-meta-label">${label}</span><span class="modal-meta-value">${value}</span></div>
-            `).join('')}
-          </div>` : ''}
-          ${d.tags ? `<span class="modal-cover-tags">${d.tags}</span>` : ''}
+          <div class="modal-cover-media"></div>
         `;
-        firstSlide.appendChild(overlay);
+        const mediaWrap = section.querySelector('.modal-cover-media');
+        const media = makeMediaEl(url, alt);
+        mediaWrap.appendChild(media);
+        track.appendChild(section);
+        return { section, media };
+      }
+
+      function buildSlides(imagesAttr, alt, tile) {
+        track.innerHTML = '';
+        const urls = (imagesAttr || '').split(',').map((s) => s.trim()).filter(Boolean);
+        if (!urls.length) return;
+
+        const isAuto = urls.length === 1;
+
+        addCoverSlide(urls[0], alt, tile);
+
+        if (!isAuto) {
+          // 직접 지정된 목록: 2번째부터 그대로 가로형 슬라이드로
+          urls.slice(1).forEach((url) => addPlainSlide(url, alt));
+          return;
+        }
+
+        // 표지 1장만 있는 경우: 같은 이름 규칙으로 최대 10장까지 자동 탐색 (2번째 슬라이드부터)
+        const match = urls[0].match(/^(.*)(\.[a-zA-Z0-9]+)$/);
+        if (!match) return;
+
+        const [, base, ext] = match;
+        for (let i = 1; i < MAX_AUTO_SLOTS; i++) {
+          const candidateUrl = `${base}-${i}${ext}`;
+          const { section, media } = addPlainSlide(candidateUrl, alt);
+          // 실제로 존재하지 않는 파일이면 조용히 슬라이드를 제거하고 도트를 다시 맞춤
+          media.addEventListener('error', () => {
+            section.remove();
+            rebuildDots();
+          }, { once: true });
+        }
       }
 
       // 현재 보고 있는 슬라이드의 영상만 재생하고 나머지는 정지
@@ -438,8 +447,7 @@
       function openModal(tile) {
         const imgEl = tile.querySelector('.work-thumb');
 
-        buildSlides(tile.dataset.images, imgEl ? imgEl.alt : '');
-        buildCoverOverlay(tile);
+        buildSlides(tile.dataset.images, imgEl ? imgEl.alt : '', tile);
         rebuildDots();
 
         modal.classList.add('is-open');
