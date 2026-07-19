@@ -483,51 +483,12 @@ body.has-custom-cursor .card {
 }
 .project-modal-close:hover { background: var(--accent); }
 
-.project-modal-head {
-  flex-shrink: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 24px;
-  padding: 22px 60px 18px 28px;
-  border-bottom: 1px solid var(--line);
-}
-
-.project-modal-head-strategy {
-  max-width: 340px;
-  flex-shrink: 0;
-}
-
-.project-modal-num {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: var(--accent);
-  margin-bottom: 6px;
-}
-
-.project-modal-title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(20px, 2.6vw, 30px);
-  line-height: 1.08;
-  margin-bottom: 6px;
-}
-
-.project-modal-tag {
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-}
-
-/* 이미지 영역을 1440x1024 비율에 맞춤 */
+/* 이미지가 팝업 전체를 채우고, 텍스트는 첫 슬라이드 위에 오버레이로 표시됨 (1440x1024 비율 유지) */
 .project-modal-track {
   flex: 0 0 auto;
   width: 100%;
   aspect-ratio: 1440 / 1024;
-  max-height: calc(90vh - 130px);
+  max-height: calc(90vh - 60px);
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
@@ -556,9 +517,80 @@ body.has-custom-cursor .card {
   display: block;
 }
 
+/* 첫 슬라이드 위에 얹히는 정보 오버레이 (제목/역할/사용툴/기여도/제작기간/태그) */
+.modal-cover-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 26px 28px;
+  background: linear-gradient(to right, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.92) 38%, rgba(255,255,255,0) 62%);
+  pointer-events: none;
+}
+
+.modal-cover-top { max-width: 320px; }
+
+.project-modal-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.project-modal-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(18px, 2.2vw, 24px);
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+
+.project-modal-tag {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.modal-cover-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 300px;
+}
+
+.modal-meta-row {
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+}
+
+.modal-meta-label {
+  flex: 0 0 62px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.modal-meta-value { font-weight: 700; }
+
+.modal-cover-tags {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
 @media (max-width: 700px) {
-  .project-modal-head { flex-direction: column; gap: 12px; }
-  .project-modal-head-strategy { max-width: none; }
+  .modal-cover-overlay {
+    background: linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.95) 45%, rgba(255,255,255,0) 75%);
+  }
+  .modal-cover-top { max-width: none; }
 }
 
 .project-modal-nav {
