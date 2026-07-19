@@ -522,7 +522,7 @@ body.has-custom-cursor .card {
   color: var(--muted);
 }
 
-/* 실제 사진 비율(약 8:5)에 맞춰 이미지 영역 높이를 확보 → 잘림 최소화 */
+/* 이미지 영역을 1440x1024 비율에 맞춤 */
 .project-modal-track {
   flex: 0 0 auto;
   width: 100%;
