@@ -11,6 +11,9 @@
 </head>
 <body>
 
+  <!-- 커스텀 트레일링 커서 (데스크톱에서만) -->
+  <div class="cursor" id="cursor"></div>
+
   <!-- ============ HEADER / NAV ============ -->
   <header class="site-header">
     <a class="logo" href="#top">
@@ -421,6 +424,46 @@
       }, { passive: false });
 
       window.addEventListener('resize', () => { if (modal.classList.contains('is-open')) updateActiveDot(); });
+    })();
+
+    // ---- 커스텀 트레일링 커서 (마우스를 따라 살짝 지연되며 잔상처럼 쫓아옴) ----
+    (function () {
+      const cursor = document.getElementById('cursor');
+      const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!cursor || isTouch || reduceMotion) return;
+
+      document.body.classList.add('has-custom-cursor');
+
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let curX = mouseX;
+      let curY = mouseY;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursor.style.opacity = '1';
+      });
+
+      document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+
+      function loop() {
+        // 지연(랙)을 줘서 커서가 실제 마우스를 살짝 늦게 쫓아가며 잔상처럼 보이게 함
+        curX += (mouseX - curX) * 0.18;
+        curY += (mouseY - curY) * 0.18;
+        cursor.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(loop);
+      }
+      loop();
+
+      const hoverTargets = 'a, button, [data-hover], .work-tile, .card';
+      document.addEventListener('mouseover', (e) => {
+        if (e.target.closest(hoverTargets)) cursor.classList.add('is-hovering');
+      });
+      document.addEventListener('mouseout', (e) => {
+        if (e.target.closest(hoverTargets)) cursor.classList.remove('is-hovering');
+      });
     })();
 
     // ---- 무드 로테이터 ----
