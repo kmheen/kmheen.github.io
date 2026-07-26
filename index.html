@@ -44,27 +44,27 @@
 
   <!-- ============ HERO ============ -->
   <section class="labs-hero" id="top">
-    <div class="labs-intro">
-      <div class="labs-intro-text">
-        <span class="hero-eyebrow reveal">PORTFOLIO 2026 — SEOUL</span>
-        <p class="labs-tagline reveal">
-          <span class="line-strong">3D, MOTION AND AI</span>
-          <span class="line-soft">for brands that want</span>
-          <span class="line-strong">TO BE REMEMBERED<span class="hero-accent">.</span></span>
-        </p>
-        <p class="hero-sub reveal">
-          올리브영, 동아제약, 삼립 등과 함께 브랜드의 에너지를 입체적으로 번역하는<br>
-          3D·모션 디자이너 김채연입니다.
-        </p>
-      </div>
-
-      <div class="scroll-cue reveal">
-        <span class="scroll-label">SCROLL TO EXPLORE</span>
-        <span class="mood-rotator" id="moodRotator">3D DESIGN</span>
-      </div>
+    <div class="cover-title">
+      <h1 class="cover-line reveal">PORTFOLIO</h1>
+      <h1 class="cover-line cover-line-photo reveal">
+        <span>BX</span>
+        <span class="cover-photo"><img src="https://kmheen.github.io/images/profile.png" alt="김채연"></span>
+        <span>DESIGNER</span>
+      </h1>
     </div>
 
-    <h2 class="portfolio-wordmark" id="wordmark"><span id="wordmarkText">PORTFOLIO</span></h2>
+    <div class="cover-meta reveal">
+      <span class="cover-meta-item">3D · MOTION · BX DESIGNER</span>
+      <a href="#work" class="cover-meta-item cover-meta-link">SELECTED WORK ↓</a>
+      <span class="cover-meta-item cover-time">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        LOCAL TIME <span id="localTime">--:--:-- --</span>
+      </span>
+    </div>
+
+    <p class="cover-intro reveal">
+      BX Designer shaping brand experiences through 3D, motion, and visual storytelling.
+    </p>
   </section>
 
   <!-- ============ MARQUEE ============ -->
@@ -304,24 +304,20 @@
       sections.forEach((sec) => io.observe(sec));
     })();
 
-    // ---- PORTFOLIO 워드마크를 화면 가로폭에 꽉 차게 늘리기 (비율 유지, 폰트 왜곡 없이) ----
-    function fitWordmark() {
-      const wrap = document.getElementById('wordmark');
-      const text = document.getElementById('wordmarkText');
-      if (!wrap || !text) return;
-      text.style.transform = 'scale(1)';
-      const wrapWidth = wrap.clientWidth;
-      const textWidth = text.getBoundingClientRect().width;
-      if (textWidth > 0) {
-        text.style.transformOrigin = 'left center';
-        text.style.transform = `scale(${wrapWidth / textWidth})`;
+    // ---- LOCAL TIME: 서울 기준 현재 시각을 1초마다 갱신 ----
+    (function () {
+      const el = document.getElementById('localTime');
+      if (!el) return;
+      function tick() {
+        const now = new Date();
+        el.textContent = now.toLocaleTimeString('en-US', {
+          timeZone: 'Asia/Seoul',
+          hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true,
+        });
       }
-    }
-    window.addEventListener('load', fitWordmark);
-    window.addEventListener('resize', fitWordmark);
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(fitWordmark);
-    }
+      tick();
+      setInterval(tick, 1000);
+    })();
 
 
     // ---- 프로젝트 클릭 → 작은 창 팝업 (이미지 갤러리 + 드래그/스크롤/휠로 다음 장 이동) ----
@@ -617,19 +613,6 @@
         if (e.target.closest(hoverTargets)) cursor.classList.remove('is-hovering');
       });
     })();
-
-    // ---- 무드 로테이터 ----
-    const moods = ["3D DESIGN", "MOTION", "AI WORKFLOW", "BRAND CAMPAIGN"];
-    let i = 0;
-    const rotator = document.getElementById('moodRotator');
-    setInterval(() => {
-      i = (i + 1) % moods.length;
-      rotator.style.opacity = 0;
-      setTimeout(() => {
-        rotator.textContent = moods[i];
-        rotator.style.opacity = 1;
-      }, 250);
-    }, 1800);
   </script>
 </body>
 </html>
