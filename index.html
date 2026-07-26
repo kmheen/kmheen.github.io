@@ -14,18 +14,12 @@
   <!-- 커스텀 트레일링 커서 (데스크톱에서만) -->
   <div class="cursor" id="cursor"></div>
 
-  <!-- ============ HEADER / NAV ============ -->
+  <!-- ============ HEADER ============ -->
   <header class="site-header">
     <a class="logo" href="#top">
       <span>KIM</span>
       <span>CHAEYEON</span>
     </a>
-
-    <nav class="main-nav">
-      <a href="#top">HOME</a>
-      <a href="#about">ABOUT</a>
-      <a href="#work">WORK</a>
-    </nav>
 
     <div class="header-right">
       <div class="social-links">
@@ -40,23 +34,31 @@
     </div>
   </header>
 
+  <!-- 상단 캡슐형 플로팅 네비게이션 (스크롤에 따라 현재 섹션이 자동으로 하이라이트됨) -->
+  <nav class="pill-nav" id="pillNav">
+    <a href="#top" data-section="top">HOME</a>
+    <a href="#work" data-section="work">WORK</a>
+    <a href="#about" data-section="about">ABOUT</a>
+    <a href="#contact" data-section="contact">CONTACT</a>
+  </nav>
+
   <!-- ============ HERO ============ -->
   <section class="labs-hero" id="top">
     <div class="labs-intro">
       <div class="labs-intro-text">
-        <span class="hero-eyebrow">PORTFOLIO 2026 — SEOUL</span>
-        <p class="labs-tagline">
+        <span class="hero-eyebrow reveal">PORTFOLIO 2026 — SEOUL</span>
+        <p class="labs-tagline reveal">
           <span class="line-strong">3D, MOTION AND AI</span>
           <span class="line-soft">for brands that want</span>
           <span class="line-strong">TO BE REMEMBERED<span class="hero-accent">.</span></span>
         </p>
-        <p class="hero-sub">
+        <p class="hero-sub reveal">
           올리브영, 동아제약, 삼립 등과 함께 브랜드의 에너지를 입체적으로 번역하는<br>
           3D·모션 디자이너 김채연입니다.
         </p>
       </div>
 
-      <div class="scroll-cue">
+      <div class="scroll-cue reveal">
         <span class="scroll-label">SCROLL TO EXPLORE</span>
         <span class="mood-rotator" id="moodRotator">3D DESIGN</span>
       </div>
@@ -75,11 +77,11 @@
 
   <!-- ============ WORKS GRID ============ -->
   <section class="works" id="work">
-    <span class="section-eyebrow">SELECTED WORK</span>
-    <h2 class="section-title">PROJECT</h2>
+    <span class="section-eyebrow reveal">SELECTED WORK</span>
+    <h2 class="section-title reveal">PROJECT</h2>
 
     <div class="works-grid grid">
-      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-01.png,https://kmheen.github.io/images/project-01-2.png,https://kmheen.github.io/images/project-01-3.png,https://kmheen.github.io/images/project-01-4.png"
+      <article class="card reveal" data-hover data-images="https://kmheen.github.io/images/project-01.png,https://kmheen.github.io/images/project-01-2.png,https://kmheen.github.io/images/project-01-3.png,https://kmheen.github.io/images/project-01-4.png"
         data-role="2D, 3D작업 · 모션 · 아카이빙 영상"
         data-tools="Cinema4D / Octane / Adobe Aftereffects / Adobe Photoshop"
         data-contribution="90"
@@ -94,7 +96,7 @@
         <span class="card-view">VIEW CASE STUDY →</span>
       </article>
 
-      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-07.png">
+      <article class="card reveal" data-hover data-images="https://kmheen.github.io/images/project-07.png">
         <div class="card-media"><img class="work-thumb" src="https://kmheen.github.io/images/project-07.png" alt="올리브 멤버스 3D 에셋" loading="lazy"></div>
         <div class="card-info">
           <span class="card-tag work-num" style="--tag:#FF5FC4">02</span>
@@ -104,7 +106,7 @@
         <span class="card-view">VIEW CASE STUDY →</span>
       </article>
 
-      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-02.png,https://kmheen.github.io/images/project-02-1.png,https://kmheen.github.io/images/project-02-2.png,https://kmheen.github.io/images/project-02-3.png,https://kmheen.github.io/images/project-02-4.png,https://kmheen.github.io/images/project-02-5.png,https://kmheen.github.io/images/project-02-6.png"
+      <article class="card reveal" data-hover data-images="https://kmheen.github.io/images/project-02.png,https://kmheen.github.io/images/project-02-1.png,https://kmheen.github.io/images/project-02-2.png,https://kmheen.github.io/images/project-02-3.png,https://kmheen.github.io/images/project-02-4.png,https://kmheen.github.io/images/project-02-5.png,https://kmheen.github.io/images/project-02-6.png"
         data-role="3D그래픽 에셋 제작"
         data-tools="Cinema4D / Octane / Adobe Photoshop"
         data-contribution="100"
@@ -119,7 +121,7 @@
         <span class="card-view">VIEW CASE STUDY →</span>
       </article>
 
-      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-03.png"
+      <article class="card reveal" data-hover data-images="https://kmheen.github.io/images/project-03.png"
         data-role="3D그래픽 에셋 제작"
         data-tools="Cinema4D / Octane / Adobe Photoshop"
         data-contribution="100"
@@ -134,7 +136,7 @@
         <span class="card-view">VIEW CASE STUDY →</span>
       </article>
 
-      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-04.png"
+      <article class="card reveal" data-hover data-images="https://kmheen.github.io/images/project-04.png"
         data-role="3D그래픽 에셋 제작"
         data-tools="Cinema4D / Octane / Adobe Photoshop"
         data-contribution="100"
@@ -149,7 +151,7 @@
         <span class="card-view">VIEW CASE STUDY →</span>
       </article>
 
-      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-05.png">
+      <article class="card reveal" data-hover data-images="https://kmheen.github.io/images/project-05.png">
         <div class="card-media"><img class="work-thumb" src="https://kmheen.github.io/images/project-05.png" alt="Binggrae Brand Content Campaign" loading="lazy"></div>
         <div class="card-info">
           <span class="card-tag work-num" style="--tag:#E31C3D">06</span>
@@ -159,7 +161,7 @@
         <span class="card-view">VIEW CASE STUDY →</span>
       </article>
 
-      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-06.png"
+      <article class="card reveal" data-hover data-images="https://kmheen.github.io/images/project-06.png"
         data-role="캐릭터 디자인 및 일러스트 디자인"
         data-tools="Cinema4D / Adobe Photoshop"
         data-contribution="100"
@@ -174,7 +176,7 @@
         <span class="card-view">VIEW CASE STUDY →</span>
       </article>
 
-      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-08.png">
+      <article class="card reveal" data-hover data-images="https://kmheen.github.io/images/project-08.png">
         <div class="card-media"><img class="work-thumb" src="https://kmheen.github.io/images/project-08.png" alt="Skog 브랜드 3D 모션" loading="lazy"></div>
         <div class="card-info">
           <span class="card-tag work-num" style="--tag:#6B4F3B">08</span>
@@ -184,7 +186,7 @@
         <span class="card-view">VIEW CASE STUDY →</span>
       </article>
 
-      <article class="card" data-hover data-images="https://kmheen.github.io/images/project-10.png">
+      <article class="card reveal" data-hover data-images="https://kmheen.github.io/images/project-10.png">
         <div class="card-media"><img class="work-thumb" src="https://kmheen.github.io/images/project-10.png" alt="에반윌리엄스 하이볼 3D 모션" loading="lazy"></div>
         <div class="card-info">
           <span class="card-tag work-num" style="--tag:#C9A24B">09</span>
@@ -218,17 +220,17 @@
   <!-- ============ ABOUT ============ -->
   <section class="about" id="about">
     <div class="about-grid">
-      <img class="about-photo" src="https://kmheen.github.io/images/profile.png" alt="Kim Chaeyeon">
+      <img class="about-photo reveal" src="https://kmheen.github.io/images/profile.png" alt="Kim Chaeyeon">
 
       <div class="about-content">
-        <span class="section-eyebrow">ABOUT</span>
-        <h2 class="about-statement">
+        <span class="section-eyebrow reveal">ABOUT</span>
+        <h2 class="about-statement reveal">
           브랜드의 톤앤매너와 메시지를 이해하고,<br>
           사용자가 쉽고 매력적으로 받아들일 수 있는<br>
           시각 언어로 풀어내는 디자이너입니다.
         </h2>
 
-        <div class="about-cols">
+        <div class="about-cols reveal">
           <div class="about-col">
             <h3>EDUCATION</h3>
             <p>2016.03 – 2021.02<br>중앙대학교 시각디자인학과 졸업</p>
@@ -240,7 +242,7 @@
           </div>
         </div>
 
-        <div class="tools">
+        <div class="tools reveal">
           <span>CINEMA 4D</span><span>OCTANE</span><span>AFTER EFFECTS</span>
           <span>PHOTOSHOP</span><span>MIDJOURNEY</span><span>CHATGPT</span><span>SORA</span>
         </div>
@@ -250,8 +252,8 @@
 
   <!-- ============ CONTACT / FOOTER ============ -->
   <footer class="site-footer" id="contact">
-    <h2 class="footer-title">LET'S WORK<br>TOGETHER<span class="hero-accent">.</span></h2>
-    <a class="footer-mail" href="mailto:00coco0@naver.com">00COCO0@NAVER.COM</a>
+    <h2 class="footer-title reveal">LET'S WORK<br>TOGETHER<span class="hero-accent">.</span></h2>
+    <a class="footer-mail reveal" href="mailto:00coco0@naver.com">00COCO0@NAVER.COM</a>
     <div class="footer-bottom">
       <span>© 2026 KIM CHAEYEON. ALL RIGHTS RESERVED.</span>
       <a href="https://instagram.com/kmheen3d" target="_blank">@KMHEEN3D</a>
@@ -259,6 +261,49 @@
   </footer>
 
   <script>
+    // ---- 스크롤 리빌: 요소가 화면에 들어오면 서서히 나타남 ----
+    (function () {
+      const items = document.querySelectorAll('.reveal');
+      if (!items.length) return;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        items.forEach((el) => el.classList.add('in'));
+        return;
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+
+      items.forEach((el) => io.observe(el));
+    })();
+
+    // ---- 상단 캡슐 네비게이션: 현재 스크롤 중인 섹션을 자동으로 하이라이트 ----
+    (function () {
+      const pillNav = document.getElementById('pillNav');
+      if (!pillNav) return;
+      const links = Array.from(pillNav.querySelectorAll('a'));
+      const sections = links
+        .map((link) => document.getElementById(link.dataset.section))
+        .filter(Boolean);
+      if (!sections.length) return;
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const activeLink = links.find((l) => l.dataset.section === entry.target.id);
+          links.forEach((l) => l.classList.toggle('is-active', l === activeLink));
+        });
+      }, { threshold: 0, rootMargin: '-45% 0px -50% 0px' });
+
+      sections.forEach((sec) => io.observe(sec));
+    })();
+
     // ---- PORTFOLIO 워드마크를 화면 가로폭에 꽉 차게 늘리기 (비율 유지, 폰트 왜곡 없이) ----
     function fitWordmark() {
       const wrap = document.getElementById('wordmark');
