@@ -222,6 +222,16 @@ body.has-custom-cursor .card {
   white-space: nowrap;
 }
 
+.local-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink);
+  font-weight: 700;
+}
+.local-time svg { color: var(--muted); flex-shrink: 0; }
+.local-time span:first-of-type { color: var(--muted); font-weight: 400; }
+
 .mood-rotator {
   font-family: var(--font-display);
   font-size: 16px;
@@ -233,21 +243,41 @@ body.has-custom-cursor .card {
 .portfolio-wordmark {
   position: relative;
   z-index: 4;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(8px, 2vw, 28px);
   white-space: nowrap;
-  text-align: left;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(60px, 13vw, 180px);
+  font-size: clamp(48px, 11vw, 150px);
   line-height: 1;
-  padding: 40px 0 120px;
+  padding: 40px var(--gap) 100px;
 }
 
-.portfolio-wordmark span {
+.wordmark-part { display: inline-block; }
+
+.wordmark-thumb {
   display: inline-block;
-  transform-origin: left center;
+  height: 0.62em;
+  aspect-ratio: 1 / 1;
+  border-radius: 14%;
+  overflow: hidden;
+  background: #eee;
+  flex-shrink: 0;
+}
+
+.wordmark-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.25s ease;
+}
+
+@media (max-width: 700px) {
+  .portfolio-wordmark { gap: 10px; }
+  .wordmark-thumb { height: 0.55em; border-radius: 18%; }
 }
 
 /* =========================================================
