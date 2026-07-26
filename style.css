@@ -152,102 +152,101 @@ body.has-custom-cursor .card {
 .inquiry-link:hover { color: var(--accent); }
 
 /* =========================================================
-   히어로 / 도형 낙하 스테이지
+   히어로 (커버)
    ========================================================= */
 .labs-hero {
   position: relative;
-  overflow: hidden;
-  padding-top: 12px;
+  padding: 70px var(--gap) 90px;
 }
 
-.labs-intro {
-  position: relative;
-  z-index: 2;
+.cover-title {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 24px;
-  flex-wrap: wrap;
-  padding: 0 var(--gap) 40px;
-  border-bottom: 1px solid var(--line);
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 32px;
 }
 
-.labs-intro-text { max-width: 640px; }
-
-.hero-eyebrow {
-  display: block;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.16em;
-  color: var(--accent);
-  margin-bottom: 16px;
-}
-
-.labs-tagline { display: flex; flex-direction: column; gap: 4px; margin-bottom: 20px; }
-
-.line-strong {
+.cover-line {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(28px, 4.6vw, 52px);
+  font-size: clamp(40px, 9vw, 128px);
   line-height: 0.98;
-  letter-spacing: 0.4px;
+  letter-spacing: -0.01em;
 }
 
-.line-soft {
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: clamp(13px, 1.6vw, 18px);
-  letter-spacing: 0.05em;
-  color: var(--muted);
+.cover-line-photo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(10px, 2vw, 22px);
+}
+
+.cover-photo {
+  display: inline-flex;
+  height: 0.82em;
+  aspect-ratio: 16 / 10;
+  border-radius: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #eee;
+}
+
+.cover-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .hero-accent { color: var(--accent); }
 
-.hero-sub {
-  font-size: 13.5px;
-  line-height: 1.7;
-  color: var(--muted);
-  font-weight: 400;
-}
-
-.scroll-cue {
+.cover-meta {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 28px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 64px;
   font-size: 11px;
   font-weight: 400;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   color: var(--muted);
-  white-space: nowrap;
 }
 
-.mood-rotator {
-  font-family: var(--font-display);
-  font-size: 16px;
-  letter-spacing: 2px;
-  color: var(--accent);
-  transition: opacity 0.25s ease;
-}
-
-.portfolio-wordmark {
-  position: relative;
-  z-index: 4;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  overflow: visible;
-  white-space: nowrap;
-  text-align: left;
-  font-family: var(--font-display);
+.cover-meta-link {
   font-weight: 700;
-  font-size: clamp(60px, 13vw, 180px);
-  line-height: 1;
-  padding: 40px 0 120px;
+  color: var(--ink);
+  transition: color 0.2s;
 }
+.cover-meta-link:hover { color: var(--accent); }
 
-.portfolio-wordmark span {
-  display: inline-block;
-  transform-origin: left center;
+.cover-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.cover-time svg { color: var(--muted); flex-shrink: 0; }
+.cover-time span:last-child { color: var(--ink); font-weight: 700; }
+
+.cover-intro {
+  max-width: 620px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.cover-intro a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.cover-intro a:hover { color: var(--accent); }
+
+@media (max-width: 700px) {
+  .cover-meta { gap: 14px; }
+  .cover-time { margin-left: 0; flex-basis: 100%; }
 }
 
 /* =========================================================
@@ -747,9 +746,6 @@ body.has-custom-cursor .card {
 
 @media (max-width: 560px) {
   .site-header { flex-direction: column; align-items: flex-start; }
-  .main-nav { flex-direction: row; gap: 16px; }
   .works-grid { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; gap: 8px; }
-  .labs-intro { align-items: flex-start; flex-direction: column; }
-  .scroll-cue { align-items: flex-start; }
 }
