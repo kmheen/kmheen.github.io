@@ -5,7 +5,7 @@
   --ink: #0a0a0a;
   --paper: #ffffff;
   --line: #e4e4e0;
-  --accent: #E4FF00;   /* 네온 옐로우 포인트 컬러 */
+  --accent: #E8B900;   /* 앰버 옐로우 포인트 컬러 */
   --muted: #8a8a86;
 
   --font-display: "Wanted Sans Variable", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
@@ -78,16 +78,53 @@ body.has-custom-cursor .card {
   letter-spacing: 0.5px;
 }
 
-.main-nav {
+/* ---- 상단 캡슐형 플로팅 네비게이션 ---- */
+.pill-nav {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 150;
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.06em;
+  gap: 4px;
+  padding: 6px;
+  background: var(--ink);
+  border-radius: 999px;
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.35);
 }
-.main-nav a { transition: color 0.2s; }
-.main-nav a:hover { color: var(--accent); }
+
+.pill-nav a {
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.25s, background 0.25s;
+}
+
+.pill-nav a:hover { color: #fff; }
+
+.pill-nav a.is-active {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+@media (max-width: 700px) {
+  .pill-nav { top: 12px; gap: 2px; padding: 5px; }
+  .pill-nav a { padding: 7px 11px; font-size: 10px; }
+}
+
+/* ---- 스크롤 리빌 애니메이션 ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(.16,.8,.24,1), transform 0.8s cubic-bezier(.16,.8,.24,1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 .header-right {
   display: flex;
@@ -244,7 +281,7 @@ body.has-custom-cursor .card {
 /* =========================================================
    워크 섹션
    ========================================================= */
-.works { padding: 100px var(--gap) 40px; }
+.works { padding: 140px var(--gap) 60px; }
 
 .section-eyebrow {
   display: block;
@@ -357,7 +394,7 @@ body.has-custom-cursor .card {
 /* =========================================================
    ABOUT
    ========================================================= */
-.about { padding: 100px var(--gap); border-top: 1px solid var(--line); }
+.about { padding: 140px var(--gap); border-top: 1px solid var(--line); }
 
 .about-grid {
   display: grid;
@@ -663,7 +700,7 @@ body.has-custom-cursor .card {
    FOOTER / CONTACT
    ========================================================= */
 .site-footer {
-  padding: 100px var(--gap) 32px;
+  padding: 160px var(--gap) 40px;
   border-top: 1px solid var(--line);
   text-align: center;
 }
