@@ -505,6 +505,13 @@
       window.addEventListener('resize', () => { if (modal.classList.contains('is-open')) updateActiveDot(); });
     })();
 
+    // ---- 현재 마우스 좌표를 공유 (커서 트레일 / 스크롤 트레일 둘 다에서 사용) ----
+    window.__pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    window.addEventListener('mousemove', (e) => {
+      window.__pointer.x = e.clientX;
+      window.__pointer.y = e.clientY;
+    }, { passive: true });
+
     // ---- 커스텀 트레일링 커서 (마우스를 따라 살짝 지연되며 잔상처럼 쫓아옴) ----
     (function () {
       const cursor = document.getElementById('cursor');
@@ -572,6 +579,38 @@
         const count = 2 + Math.floor(Math.random() * 3);
         for (let i = 0; i < count; i++) spawnStar(e.clientX, e.clientY);
       });
+    })();
+
+    // ---- 스크롤 트레일: 스크롤할 때도 마우스 커서 위치를 따라 별이 부드럽게 흩날림 ----
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      function spawnScrollStar() {
+        const { x, y } = window.__pointer;
+        const el = document.createElement('span');
+        el.className = 'cursor-emoji';
+        el.textContent = '⭐';
+        // 커서 위치 아주 가까이에서만 살짝 흩어지도록 (커서 동선을 그대로 따라가는 느낌)
+        const offsetX = (Math.random() - 0.5) * 24;
+        const offsetY = (Math.random() - 0.5) * 24;
+        el.style.left = `${x + offsetX}px`;
+        el.style.top = `${y + offsetY}px`;
+        el.style.fontSize = `${8 + Math.random() * 7}px`;
+        el.style.setProperty('--rot', `${Math.random() * 360}deg`);
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 2600);
+      }
+
+      let ticking = false;
+
+      window.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          spawnScrollStar();
+          ticking = false;
+        });
+      }, { passive: true });
     })();
   </script>
 </body>
