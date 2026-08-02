@@ -154,7 +154,7 @@ body.has-custom-cursor .card {
    ========================================================= */
 .labs-hero {
   position: relative;
-  padding: min(14vw, 150px) var(--gap) 60px;
+  padding: min(16vw, 190px) var(--gap) 110px;
   text-align: center;
 }
 
@@ -163,7 +163,7 @@ body.has-custom-cursor .card {
 .work-hero-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(40px, 10vw, 140px);
+  font-size: clamp(56px, 13vw, 180px);
   line-height: 0.9;
   letter-spacing: -0.01em;
 }
@@ -180,7 +180,7 @@ body.has-custom-cursor .card {
 /* =========================================================
    워크 섹션
    ========================================================= */
-.works { padding: 60px var(--gap) 60px; }
+.works { padding: 90px var(--gap) 60px; }
 
 .section-eyebrow {
   display: block;
