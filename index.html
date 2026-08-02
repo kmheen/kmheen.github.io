@@ -543,6 +543,15 @@
       document.addEventListener('mouseout', (e) => {
         if (e.target.closest(hoverTargets)) cursor.classList.remove('is-hovering');
       });
+
+      // 흰 배경 위에서는 순수 블루로 고정, 사진/어두운 배경 위에서만 블렌드 모드로 전환
+      const invertTargets = 'img, video, .project-modal-close, .cursor-emoji, .image-trail-item';
+      document.addEventListener('mouseover', (e) => {
+        if (e.target.closest(invertTargets)) cursor.classList.add('on-media');
+      });
+      document.addEventListener('mouseout', (e) => {
+        if (e.target.closest(invertTargets)) cursor.classList.remove('on-media');
+      });
     })();
 
     // ---- Image Trail on Mouse Move: 마우스가 지나간 자리를 따라 네온옐로우 별이 잔상처럼 나타남 ----
