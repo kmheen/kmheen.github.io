@@ -505,13 +505,6 @@
       window.addEventListener('resize', () => { if (modal.classList.contains('is-open')) updateActiveDot(); });
     })();
 
-    // ---- 현재 마우스 좌표를 공유 (커서 트레일 / 스크롤 트레일 둘 다에서 사용) ----
-    window.__pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    window.addEventListener('mousemove', (e) => {
-      window.__pointer.x = e.clientX;
-      window.__pointer.y = e.clientY;
-    }, { passive: true });
-
     // ---- 커스텀 트레일링 커서 (마우스를 따라 살짝 지연되며 잔상처럼 쫓아옴) ----
     (function () {
       const cursor = document.getElementById('cursor');
@@ -550,66 +543,40 @@
       document.addEventListener('mouseout', (e) => {
         if (e.target.closest(hoverTargets)) cursor.classList.remove('is-hovering');
       });
-
-      // ---- 커서가 지나간 자리에 별이 촤라락~ 소나기처럼 흩뿌려지는 연출 ----
-      let lastEmojiTime = 0;
-      const emojiInterval = 50; // ms, 촘촘하게 자주 뿌려지도록
-
-      function spawnStar(x, y) {
-        const el = document.createElement('span');
-        el.className = 'cursor-emoji';
-        el.textContent = '⭐';
-        // 커서 위치에서 사방으로 흩어지도록
-        const offsetX = (Math.random() - 0.5) * 70;
-        const offsetY = (Math.random() - 0.5) * 70;
-        el.style.left = `${x + offsetX}px`;
-        el.style.top = `${y + offsetY}px`;
-        el.style.fontSize = `${8 + Math.random() * 7}px`;
-        el.style.setProperty('--rot', `${Math.random() * 360}deg`);
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 2600);
-      }
-
-      window.addEventListener('mousemove', (e) => {
-        const now = performance.now();
-        if (now - lastEmojiTime < emojiInterval) return;
-        lastEmojiTime = now;
-
-        // 한 번에 여러 개를 같이 뿌려서 촤라락 흩날리는 느낌을 줌
-        const count = 2 + Math.floor(Math.random() * 3);
-        for (let i = 0; i < count; i++) spawnStar(e.clientX, e.clientY);
-      });
     })();
 
-    // ---- 스크롤 트레일: 스크롤할 때도 마우스 커서 위치를 따라 별이 부드럽게 흩날림 ----
+    // ---- Image Trail on Mouse Move: 마우스가 지나간 자리를 따라 네온옐로우 별이 잔상처럼 나타남 ----
     (function () {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+      if (reduceMotion || isTouch) return;
 
-      function spawnScrollStar() {
-        const { x, y } = window.__pointer;
-        const el = document.createElement('span');
-        el.className = 'cursor-emoji';
-        el.textContent = '⭐';
-        // 커서 위치 아주 가까이에서만 살짝 흩어지도록 (커서 동선을 그대로 따라가는 느낌)
-        const offsetX = (Math.random() - 0.5) * 24;
-        const offsetY = (Math.random() - 0.5) * 24;
-        el.style.left = `${x + offsetX}px`;
-        el.style.top = `${y + offsetY}px`;
-        el.style.fontSize = `${8 + Math.random() * 7}px`;
-        el.style.setProperty('--rot', `${Math.random() * 360}deg`);
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 2600);
-      }
+      const starSVG = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.9 6.26L21 9.27l-4.5 4.38L17.8 20 12 16.9 6.2 20l1.3-6.35L3 9.27l6.1-1.01L12 2z" fill="#E8FF00"/></svg>';
 
-      let ticking = false;
+      let lastX = null;
+      let lastY = null;
+      const minDistance = 60; // 이 거리 이상 움직였을 때만 새 별을 하나 남김
 
-      window.addEventListener('scroll', () => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-          spawnScrollStar();
-          ticking = false;
-        });
+      window.addEventListener('mousemove', (e) => {
+        const { clientX: x, clientY: y } = e;
+        if (lastX !== null) {
+          const dx = x - lastX;
+          const dy = y - lastY;
+          if (Math.sqrt(dx * dx + dy * dy) < minDistance) return;
+        }
+        lastX = x;
+        lastY = y;
+
+        const star = document.createElement('span');
+        star.className = 'image-trail-item';
+        star.innerHTML = starSVG;
+        star.style.left = `${x}px`;
+        star.style.top = `${y}px`;
+        star.style.setProperty('--rot', `${(Math.random() - 0.5) * 60}deg`);
+        document.body.appendChild(star);
+        requestAnimationFrame(() => star.classList.add('is-in'));
+        setTimeout(() => star.classList.add('is-out'), 500);
+        setTimeout(() => star.remove(), 900);
       }, { passive: true });
     })();
   </script>
