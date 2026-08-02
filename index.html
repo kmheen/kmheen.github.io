@@ -21,50 +21,30 @@
       <span>CHAEYEON</span>
     </a>
 
-    <div class="header-right">
-      <div class="social-links">
-        <a href="https://instagram.com/kmheen3d" target="_blank">@KMHEEN3D</a>
-      </div>
-      <div class="availability">
-        <span class="status-dot"></span>
-        AVAILABLE FOR PROJECTS<br>
-        <a href="mailto:00coco0@naver.com">00COCO0@NAVER.COM</a><br>
-        <a href="#contact" class="inquiry-link">SEND PROJECT INQUIRY →</a>
-      </div>
+    <nav class="main-nav">
+      <a href="#top">HOME</a>
+      <a href="#about">ABOUT</a>
+      <a href="#work">WORKS</a>
+    </nav>
+
+    <div class="social-links">
+      <a href="https://instagram.com/kmheen3d" target="_blank">INSTAGRAM</a>
+      <a href="#" target="_blank">LINKEDIN</a>
+      <a href="#" target="_blank">X/TWITTER</a>
+    </div>
+
+    <div class="availability">
+      <span class="status-dot"></span>
+      AVAILABLE FOR PROJECTS<br>
+      <a href="mailto:00coco0@naver.com">00COCO0@NAVER.COM</a><br>
+      <a href="#contact" class="inquiry-link">SEND PROJECT INQUIRY →</a>
     </div>
   </header>
 
-  <!-- 상단 캡슐형 플로팅 네비게이션 (스크롤에 따라 현재 섹션이 자동으로 하이라이트됨) -->
-  <nav class="pill-nav" id="pillNav">
-    <a href="#top" data-section="top">HOME</a>
-    <a href="#work" data-section="work">WORK</a>
-    <a href="#about" data-section="about">ABOUT</a>
-    <a href="#contact" data-section="contact">CONTACT</a>
-  </nav>
-
   <!-- ============ HERO ============ -->
   <section class="labs-hero" id="top">
-    <div class="labs-intro">
-      <div class="labs-intro-text">
-        <span class="hero-eyebrow reveal">PORTFOLIO 2026 — SEOUL</span>
-        <p class="labs-tagline reveal">
-          <span class="line-strong">3D, MOTION AND AI</span>
-          <span class="line-soft">for brands that want</span>
-          <span class="line-strong">TO BE REMEMBERED<span class="hero-accent">.</span></span>
-        </p>
-        <p class="hero-sub reveal">
-          올리브영, 동아제약, 삼립 등과 함께 브랜드의 에너지를 입체적으로 번역하는<br>
-          3D·모션 디자이너 김채연입니다.
-        </p>
-      </div>
-
-      <div class="scroll-cue reveal">
-        <span class="scroll-label">SCROLL TO EXPLORE</span>
-        <span class="mood-rotator" id="moodRotator">3D DESIGN</span>
-      </div>
-    </div>
-
-    <h2 class="portfolio-wordmark" id="wordmark"><span id="wordmarkText">PORTFOLIO</span></h2>
+    <h1 class="work-hero-title reveal">WORK</h1>
+    <span class="work-scroll-cue reveal">SCROLL TO EXPLORE</span>
   </section>
 
   <!-- ============ MARQUEE ============ -->
@@ -282,46 +262,6 @@
 
       items.forEach((el) => io.observe(el));
     })();
-
-    // ---- 상단 캡슐 네비게이션: 현재 스크롤 중인 섹션을 자동으로 하이라이트 ----
-    (function () {
-      const pillNav = document.getElementById('pillNav');
-      if (!pillNav) return;
-      const links = Array.from(pillNav.querySelectorAll('a'));
-      const sections = links
-        .map((link) => document.getElementById(link.dataset.section))
-        .filter(Boolean);
-      if (!sections.length) return;
-
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const activeLink = links.find((l) => l.dataset.section === entry.target.id);
-          links.forEach((l) => l.classList.toggle('is-active', l === activeLink));
-        });
-      }, { threshold: 0, rootMargin: '-45% 0px -50% 0px' });
-
-      sections.forEach((sec) => io.observe(sec));
-    })();
-
-    // ---- PORTFOLIO 워드마크를 화면 가로폭에 꽉 차게 늘리기 (비율 유지, 폰트 왜곡 없이) ----
-    function fitWordmark() {
-      const wrap = document.getElementById('wordmark');
-      const text = document.getElementById('wordmarkText');
-      if (!wrap || !text) return;
-      text.style.transform = 'scale(1)';
-      const wrapWidth = wrap.clientWidth;
-      const textWidth = text.getBoundingClientRect().width;
-      if (textWidth > 0) {
-        text.style.transformOrigin = 'left center';
-        text.style.transform = `scale(${wrapWidth / textWidth})`;
-      }
-    }
-    window.addEventListener('load', fitWordmark);
-    window.addEventListener('resize', fitWordmark);
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(fitWordmark);
-    }
 
 
     // ---- 프로젝트 클릭 → 작은 창 팝업 (이미지 갤러리 + 드래그/스크롤/휠로 다음 장 이동) ----
@@ -640,21 +580,6 @@
         setTimeout(() => el.remove(), 4200);
       });
     })();
-
-    // ---- 무드 로테이터 ----
-    const moods = ["3D DESIGN", "MOTION", "AI WORKFLOW", "BRAND CAMPAIGN"];
-    let moodIndex = 0;
-    const rotator = document.getElementById('moodRotator');
-    if (rotator) {
-      setInterval(() => {
-        moodIndex = (moodIndex + 1) % moods.length;
-        rotator.style.opacity = 0;
-        setTimeout(() => {
-          rotator.textContent = moods[moodIndex];
-          rotator.style.opacity = 1;
-        }, 250);
-      }, 1800);
-    }
   </script>
 </body>
 </html>
