@@ -483,7 +483,7 @@ body.has-custom-cursor .card {
   padding: 26px 28px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   overflow-y: auto;
   background: var(--paper);
 }
@@ -533,6 +533,8 @@ body.has-custom-cursor .card {
   flex-direction: column;
   gap: 6px;
   max-width: 300px;
+  margin-top: auto;
+  padding-top: 24px;
 }
 
 .modal-meta-row {
@@ -551,6 +553,7 @@ body.has-custom-cursor .card {
 
 .modal-cover-tags {
   display: block;
+  margin-top: 20px;
   font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.04em;
