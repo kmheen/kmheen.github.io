@@ -60,15 +60,17 @@ body.has-custom-cursor .card {
   z-index: 9998;
   font-size: 16px;
   pointer-events: none;
-  transform: translate(-50%, -50%) scale(0);
-  animation: cursor-emoji-pop 4.2s ease-out forwards;
+  --rot: 0deg;
+  transform: translate(-50%, -50%) scale(0) rotate(var(--rot));
+  animation: cursor-emoji-pop 2.6s cubic-bezier(.16,.8,.24,1) forwards;
 }
 
 @keyframes cursor-emoji-pop {
-  0%   { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-  8%   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-  75%  { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
+  0%   { transform: translate(-50%, -50%) scale(0) rotate(var(--rot)); opacity: 0; }
+  12%  { transform: translate(-50%, -50%) scale(1.1) rotate(var(--rot)); opacity: 1; }
+  25%  { transform: translate(-50%, -50%) scale(1) rotate(var(--rot)); opacity: 1; }
+  70%  { transform: translate(-50%, -50%) scale(0.95) rotate(var(--rot)); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(0.6) rotate(var(--rot)); opacity: 0; }
 }
 
 /* =========================================================
