@@ -299,7 +299,7 @@
       //   data-images가 썸네일 1장뿐이면 project-XX-1.png ~ project-XX-9.png를 자동 탐색(최대 9장 추가)
       // - mp4/webm/mov 확장자는 자동으로 영상 슬라이드(음소거·자동재생·루프)로 만들어짐
       const VIDEO_EXT = /\.(mp4|webm|mov)(\?.*)?$/i;
-      const MAX_AUTO_SLOTS = 10;
+      const MAX_AUTO_SLOTS = 30;
 
       function makeMediaEl(url, alt) {
         if (VIDEO_EXT.test(url)) {
