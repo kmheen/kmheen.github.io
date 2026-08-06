@@ -612,9 +612,8 @@ body.has-custom-cursor .card {
 }
 
 @media (max-width: 700px) {
-  .project-modal { padding: 0; }
-  .project-modal-panel { width: 100vw; max-height: 100vh; height: 100vh; border-radius: 0; }
-  .project-modal-track { flex: 1; aspect-ratio: auto; max-height: none; }
+  .project-modal { padding: 14px; }
+  .project-modal-panel { width: 100%; max-height: 92vh; }
 }
 
 
