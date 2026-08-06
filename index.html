@@ -299,7 +299,7 @@
       //   data-images가 썸네일 1장뿐이면 project-XX-1.png ~ project-XX-9.png를 자동 탐색(최대 9장 추가)
       // - mp4/webm/mov 확장자는 자동으로 영상 슬라이드(음소거·자동재생·루프)로 만들어짐
       const VIDEO_EXT = /\.(mp4|webm|mov)(\?.*)?$/i;
-      const MAX_AUTO_SLOTS = 30;
+      const MAX_AUTO_SLOTS = 20;
 
       function makeMediaEl(url, alt) {
         if (VIDEO_EXT.test(url)) {
@@ -393,19 +393,24 @@
           return;
         }
 
-        // 갤러리 이미지가 1장(=썸네일)뿐이면 같은 이름 규칙으로 최대 9장까지 자동 탐색
+        // 갤러리 이미지가 1장(=썸네일)뿐이면 같은 이름 규칙으로 최대 N장까지 자동 탐색
+        // → 확장자도 여러 개(png/jpg/jpeg/webp/mp4/webm/mov)를 같이 시도하므로
+        //   project-XX-1.png, project-XX-2.mp4 처럼 사진과 영상을 섞어서 올려도 자동으로 인식됨
         const match = urls[0].match(/^(.*)(\.[a-zA-Z0-9]+)$/);
         if (!match) return;
 
-        const [, base, ext] = match;
+        const EXT_CANDIDATES = ['png', 'jpg', 'jpeg', 'webp', 'mp4', 'webm', 'mov'];
+        const base = match[1];
         for (let i = 1; i < MAX_AUTO_SLOTS; i++) {
-          const candidateUrl = `${base}-${i}${ext}`;
-          const { section, media } = addPlainSlide(candidateUrl, alt);
-          // 실제로 존재하지 않는 파일이면 조용히 슬라이드를 제거하고 도트를 다시 맞춤
-          media.addEventListener('error', () => {
-            section.remove();
-            rebuildDots();
-          }, { once: true });
+          EXT_CANDIDATES.forEach((ext) => {
+            const candidateUrl = `${base}-${i}.${ext}`;
+            const { section, media } = addPlainSlide(candidateUrl, alt);
+            // 실제로 존재하지 않는 파일이면 조용히 슬라이드를 제거하고 도트를 다시 맞춤
+            media.addEventListener('error', () => {
+              section.remove();
+              rebuildDots();
+            }, { once: true });
+          });
         }
       }
 
