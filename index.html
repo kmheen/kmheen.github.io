@@ -601,13 +601,8 @@
         for (let i = 0; i < count; i++) spawnOneStar(x, y);
       }
 
-      let currentX = window.innerWidth / 2;
-      let currentY = window.innerHeight / 2;
-
       // 데스크톱: 마우스 이동을 따라
       window.addEventListener('mousemove', (e) => {
-        currentX = e.clientX;
-        currentY = e.clientY;
         trySpawn(e.clientX, e.clientY);
       }, { passive: true });
 
@@ -616,31 +611,12 @@
         lastX = null;
         lastY = null;
         const t = e.touches[0];
-        if (t) {
-          currentX = t.clientX;
-          currentY = t.clientY;
-          trySpawn(t.clientX, t.clientY);
-        }
+        if (t) trySpawn(t.clientX, t.clientY);
       }, { passive: true });
 
       window.addEventListener('touchmove', (e) => {
         const t = e.touches[0];
-        if (t) {
-          currentX = t.clientX;
-          currentY = t.clientY;
-          trySpawn(t.clientX, t.clientY);
-        }
-      }, { passive: true });
-
-      // 빠르게 스크롤할 때도(마우스/손가락이 멈춰있어도) 지금 커서 위치에 별이 계속 남도록
-      let scrollTicking = false;
-      window.addEventListener('scroll', () => {
-        if (scrollTicking) return;
-        scrollTicking = true;
-        requestAnimationFrame(() => {
-          spawnOneStar(currentX, currentY);
-          scrollTicking = false;
-        });
+        if (t) trySpawn(t.clientX, t.clientY);
       }, { passive: true });
     })();
   </script>
