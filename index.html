@@ -560,11 +560,10 @@
       });
     })();
 
-    // ---- Image Trail on Mouse Move: 마우스가 지나간 자리를 따라 네온옐로우 별이 잔상처럼 나타남 ----
+    // ---- Image Trail on Mouse/Touch Move: 커서(또는 손가락)가 지나간 자리를 따라 네온옐로우 별이 잔상처럼 나타남 ----
     (function () {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
-      if (reduceMotion || isTouch) return;
+      if (reduceMotion) return;
 
       const starSVG = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.9 6.26L21 9.27l-4.5 4.38L17.8 20 12 16.9 6.2 20l1.3-6.35L3 9.27l6.1-1.01L12 2z" fill="#E8FF00"/></svg>';
 
@@ -572,8 +571,7 @@
       let lastY = null;
       const minDistance = 60; // 이 거리 이상 움직였을 때만 새 별을 하나 남김
 
-      window.addEventListener('mousemove', (e) => {
-        const { clientX: x, clientY: y } = e;
+      function trySpawn(x, y) {
         if (lastX !== null) {
           const dx = x - lastX;
           const dy = y - lastY;
@@ -592,6 +590,24 @@
         requestAnimationFrame(() => star.classList.add('is-in'));
         setTimeout(() => star.classList.add('is-out'), 500);
         setTimeout(() => star.remove(), 900);
+      }
+
+      // 데스크톱: 마우스 이동을 따라
+      window.addEventListener('mousemove', (e) => {
+        trySpawn(e.clientX, e.clientY);
+      }, { passive: true });
+
+      // 모바일/터치: 손가락으로 드래그하는 동선을 따라
+      window.addEventListener('touchstart', (e) => {
+        lastX = null;
+        lastY = null;
+        const t = e.touches[0];
+        if (t) trySpawn(t.clientX, t.clientY);
+      }, { passive: true });
+
+      window.addEventListener('touchmove', (e) => {
+        const t = e.touches[0];
+        if (t) trySpawn(t.clientX, t.clientY);
       }, { passive: true });
     })();
   </script>
