@@ -562,9 +562,25 @@ body.has-custom-cursor .card {
 }
 
 @media (max-width: 700px) {
+  .project-modal { padding: 14px; }
+  .project-modal-panel { width: 100%; max-height: 92vh; }
+  /* 가로형 비율 고정을 풀고, 패널 높이에 맞춰 세로로 자라도록 함 */
+  .project-modal-track { aspect-ratio: auto; max-height: none; flex: 1; }
+
+  .modal-page-image img,
+  .modal-page-image video {
+    object-fit: contain;
+    background: #eee;
+  }
+
   .modal-page-cover { flex-direction: column; }
-  .modal-cover-text { flex: 0 0 auto; max-height: 55%; }
-  .modal-cover-media { flex: 1; }
+  .modal-cover-text { flex: 0 0 auto; max-height: 42%; }
+  .modal-cover-media { flex: 1; min-height: 0; }
+  .modal-cover-media img,
+  .modal-cover-media video {
+    object-fit: contain;
+    background: #eee;
+  }
   .modal-cover-top { max-width: none; }
 }
 
@@ -609,16 +625,6 @@ body.has-custom-cursor .card {
   font-size: clamp(15px, 1.6vw, 19px);
   line-height: 1.6;
   font-weight: 400;
-}
-
-@media (max-width: 700px) {
-  .project-modal { padding: 14px; }
-  .project-modal-panel { width: 100%; max-height: 92vh; }
-  .modal-page-image img,
-  .modal-page-image video {
-    object-fit: contain;
-    background: #eee;
-  }
 }
 
 
