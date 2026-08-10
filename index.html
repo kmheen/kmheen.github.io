@@ -569,7 +569,23 @@
 
       let lastX = null;
       let lastY = null;
-      const minDistance = 60; // 이 거리 이상 움직였을 때만 새 별을 하나 남김
+      const minDistance = 22; // 이 거리 이상 움직였을 때만 새 별을 남김 (더 예민하게)
+
+      function spawnOneStar(x, y) {
+        const star = document.createElement('span');
+        star.className = 'image-trail-item';
+        star.innerHTML = starSVG;
+        // 살짝 랜덤하게 흩어지도록
+        const offsetX = (Math.random() - 0.5) * 20;
+        const offsetY = (Math.random() - 0.5) * 20;
+        star.style.left = `${x + offsetX}px`;
+        star.style.top = `${y + offsetY}px`;
+        star.style.setProperty('--rot', `${(Math.random() - 0.5) * 60}deg`);
+        document.body.appendChild(star);
+        requestAnimationFrame(() => star.classList.add('is-in'));
+        setTimeout(() => star.classList.add('is-out'), 500);
+        setTimeout(() => star.remove(), 900);
+      }
 
       function trySpawn(x, y) {
         if (lastX !== null) {
@@ -580,20 +596,18 @@
         lastX = x;
         lastY = y;
 
-        const star = document.createElement('span');
-        star.className = 'image-trail-item';
-        star.innerHTML = starSVG;
-        star.style.left = `${x}px`;
-        star.style.top = `${y}px`;
-        star.style.setProperty('--rot', `${(Math.random() - 0.5) * 60}deg`);
-        document.body.appendChild(star);
-        requestAnimationFrame(() => star.classList.add('is-in'));
-        setTimeout(() => star.classList.add('is-out'), 500);
-        setTimeout(() => star.remove(), 900);
+        // 한 번에 별을 1~2개씩 같이 남겨서 더 풍성하게
+        const count = 1 + Math.floor(Math.random() * 2);
+        for (let i = 0; i < count; i++) spawnOneStar(x, y);
       }
+
+      let currentX = window.innerWidth / 2;
+      let currentY = window.innerHeight / 2;
 
       // 데스크톱: 마우스 이동을 따라
       window.addEventListener('mousemove', (e) => {
+        currentX = e.clientX;
+        currentY = e.clientY;
         trySpawn(e.clientX, e.clientY);
       }, { passive: true });
 
@@ -602,12 +616,31 @@
         lastX = null;
         lastY = null;
         const t = e.touches[0];
-        if (t) trySpawn(t.clientX, t.clientY);
+        if (t) {
+          currentX = t.clientX;
+          currentY = t.clientY;
+          trySpawn(t.clientX, t.clientY);
+        }
       }, { passive: true });
 
       window.addEventListener('touchmove', (e) => {
         const t = e.touches[0];
-        if (t) trySpawn(t.clientX, t.clientY);
+        if (t) {
+          currentX = t.clientX;
+          currentY = t.clientY;
+          trySpawn(t.clientX, t.clientY);
+        }
+      }, { passive: true });
+
+      // 빠르게 스크롤할 때도(마우스/손가락이 멈춰있어도) 지금 커서 위치에 별이 계속 남도록
+      let scrollTicking = false;
+      window.addEventListener('scroll', () => {
+        if (scrollTicking) return;
+        scrollTicking = true;
+        requestAnimationFrame(() => {
+          spawnOneStar(currentX, currentY);
+          scrollTicking = false;
+        });
       }, { passive: true });
     })();
   </script>
