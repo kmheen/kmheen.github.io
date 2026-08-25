@@ -465,10 +465,16 @@ body.has-custom-cursor .card {
 
 .modal-page-image { background: #eee; }
 
-.modal-page-image img,
-.modal-page-image video {
+.modal-page-image img {
   width: 100%; height: 100%;
   object-fit: cover;
+  display: block;
+}
+
+/* 세로/가로 어떤 비율이든 영상은 잘리지 않게 높이 기준으로 맞추고 좌우 여백 자동 처리 */
+.modal-page-image video {
+  width: 100%; height: 100%;
+  object-fit: contain;
   display: block;
 }
 
@@ -494,10 +500,15 @@ body.has-custom-cursor .card {
   background: #eee;
 }
 
-.modal-cover-media img,
-.modal-cover-media video {
+.modal-cover-media img {
   width: 100%; height: 100%;
   object-fit: cover;
+  display: block;
+}
+
+.modal-cover-media video {
+  width: 100%; height: 100%;
+  object-fit: contain;
   display: block;
 }
 
