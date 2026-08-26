@@ -134,12 +134,17 @@
         <span class="card-view">VIEW CASE STUDY →</span>
       </article>
 
-      <article class="card reveal" data-hover data-images="https://kmheen.github.io/images/project-05.png">
-        <div class="card-media"><img class="work-thumb" src="https://kmheen.github.io/images/project-05.png" alt="Binggrae Brand Content Campaign" loading="lazy"></div>
+      <article class="card reveal" data-hover data-images="https://kmheen.github.io/images/project-05.png"
+        data-role="비주얼 디자인 및 AI 기반 콘텐츠 제작"
+        data-tools="CHAT GPT / MAGNIFIC / MIDJOURNEY / KLING 등"
+        data-contribution="60 / 100 / 100"
+        data-description="AI를 단순 생성 도구가 아닌, 아이디어 탐색부터 결과 제작까지 확장 가능한 디자인 도구로 활용합니다. 프로젝트의 목적에 따라 AI와 수작업을 결합해 효율성과 완성도를 동시에 확보합니다."
+        data-tags="AI / MOTION / VISUAL">
+        <div class="card-media"><img class="work-thumb" src="https://kmheen.github.io/images/project-05.png" alt="AI Workflow" loading="lazy"></div>
         <div class="card-info">
           <span class="card-tag work-num" style="--tag:#8B7CF6">07</span>
-          <h3 class="work-name">BINGGRAE BRAND<br>CONTENT CAMPAIGN</h3>
-          <p class="work-tag">[빙그레] 2026 CALENDAR / 2025</p>
+          <h3 class="work-name">AI WORKFLOW</h3>
+          <p class="work-tag">[빙그레] 2026 CALENDAR / 2025<br>[오세븐] 2026 달의해 / 2026<br>[삼립] SPC GIFT CARD, GOLDEN MOMENTS, JAMMYS / 2026</p>
         </div>
         <span class="card-view">VIEW CASE STUDY →</span>
       </article>
@@ -333,7 +338,7 @@
             <div class="modal-cover-top">
               <span class="project-modal-num">${num ? num.textContent : ''}</span>
               <h2 class="project-modal-title">${name ? name.innerHTML : ''}</h2>
-              <span class="project-modal-tag">${tag ? tag.textContent : ''}</span>
+              <span class="project-modal-tag">${tag ? tag.innerHTML : ''}</span>
             </div>
             ${metaRows.length ? `
             <div class="modal-cover-meta">
@@ -341,6 +346,7 @@
                 <div class="modal-meta-row"><span class="modal-meta-label">${label}</span><span class="modal-meta-value">${value}</span></div>
               `).join('')}
             </div>` : '<div></div>'}
+            ${d.description ? `<p class="modal-cover-desc">${d.description}</p>` : ''}
             ${d.tags ? `<span class="modal-cover-tags">${d.tags}</span>` : '<span></span>'}
           </div>
           <div class="modal-cover-media"></div>
