@@ -545,8 +545,16 @@ body.has-custom-cursor .card {
   gap: 6px;
   max-width: 300px;
   margin-top: auto;
-  margin-bottom: 48px;
+  margin-bottom: 20px;
   padding-top: 24px;
+}
+
+.modal-cover-desc {
+  max-width: 300px;
+  font-size: 11.5px;
+  line-height: 1.65;
+  color: var(--muted);
+  white-space: pre-line;
 }
 
 .modal-meta-row {
